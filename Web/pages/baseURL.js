@@ -4,5 +4,6 @@ export default {
     userAdd: "/user/addUser",
     userGetById: "/user/getUserById",
     userGetByName: "/user/getUserByName",
-    login:"/user/login"
+    login:"/user/login",
+    sessionCheck:"/session/check"
 }

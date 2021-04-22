@@ -1,5 +1,6 @@
 package com.dql.retailmanager.controller;
 
+import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,19 @@ import javax.annotation.Resource;
 public class UserController {
     @Resource
     UserService userService;
+    @Resource
+    SessionDao sessionDao;
 
     @GetMapping("/login")
-    public int getUserById(@RequestParam String name,@RequestParam String pwd) {
+    public User getUserById(@RequestParam String name,@RequestParam String pwd,@RequestParam String sessionToken) {
         User user = userService.findUserByName(name);
-        if (user!=null && user.getPwd().equals(pwd.trim())) return 1;
-        return -1;
+        if (user!=null && user.getPwd().equals(pwd.trim())){
+            // 存储用户session
+            sessionDao.deleteSessionByUserId(user.getId());
+            sessionDao.insertSession(user.getId(), sessionToken);
+            return user;
+        }
+        return null;
     }
     @GetMapping("/getUserById")
     public User getUserById(@RequestParam int id) {
