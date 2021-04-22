@@ -1,0 +1,17 @@
+server:
+    port: 8081
+spring:
+#数据库连接配置
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://39.108.159.175:3306/jsh_erp?useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatements=true&useSSL=false
+        username: root
+        password: 0800
+
+#mybatis的相关配置
+mybatis:
+    #mapper配置文件
+    mapper-locations: classpath:mapper/*.xml
+    #开启驼峰命名
+    configuration:
+        map-underscore-to-camel-case: true
