@@ -49,7 +49,7 @@
             var rod = Math.round(1, 100);
             var md5rod = $.md5(rod + 'author');
             console.log(md5rod);
-            $.get(urlInfo.baseUrl + urlInfo.login, {
+            $.get(urlInfo.login, {
               name: data.field.username,
               pwd: data.field.password,
               sessionToken: md5rod

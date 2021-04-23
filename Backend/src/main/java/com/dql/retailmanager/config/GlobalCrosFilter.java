@@ -18,7 +18,7 @@ public class GlobalCrosFilter {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         // 允许访问的origin请求，即前端服务部署（tomcat）的地址，即设置Access-Control-Allow-Origin
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8081","localhost:8081"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:8081","http://localhost:9999"));
         // 可访问的header
         config.addAllowedHeader("*");
         // 允许访问的请求方法类型，此处禁用PUT、DELETE之类的有安全风险的方法访问后台可避免那些方法带来的漏洞风险

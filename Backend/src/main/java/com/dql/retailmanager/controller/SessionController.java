@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/api/session")
 public class SessionController {
     @Resource
     UserDao userDao;
