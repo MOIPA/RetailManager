@@ -64,12 +64,12 @@
         </ul> -->
         <ul class="layui-nav right" lay-filter="">
             <li class="layui-nav-item">
-                <a href="javascript:;">admin</a>
+                <a href="javascript:;" id="user"></a>
                 <dl class="layui-nav-child">
                     <!-- 二级菜单 -->
-                    <dd>
-                        <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a>
-                    </dd>
+                    <!-- <dd>
+                        <a onclick="xadmin.open('个人信息','')">个人信息</a>
+                    </dd> -->
                     <dd>
                         <a href="./login.html">退出</a>
                     </dd>
@@ -204,14 +204,14 @@
         <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
             <ul class="layui-tab-title">
                 <li class="home">
-                    <i class="layui-icon">&#xe68e;</i>我的桌面
+                    <i class="layui-icon">&#xe68e;</i>mydesk
                 </li>
             </ul>
             <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
                 <dl>
-                    <dd data-type="this">关闭当前</dd>
-                    <dd data-type="other">关闭其它</dd>
-                    <dd data-type="all">关闭全部</dd>
+                    <dd data-type="this">close current</dd>
+                    <dd data-type="other">close other</dd>
+                    <dd data-type="all">close all</dd>
                 </dl>
             </div>
             <div class="layui-tab-content">
@@ -245,7 +245,8 @@
                         window.event.returnValue = false;
                     }, 1500);
                 } else {
-                    console.log("logined user");
+                    $('#user').text(localStorage.getItem("userName"));
+                    console.log("logined user"+localStorage.getItem("userName"));
                 }
             });
         });

@@ -57,7 +57,8 @@
               if (data != null && data != "") {
                 localStorage.setItem("token", md5rod);
                 localStorage.setItem("userId", data.id)
-                localStorage.setItem("user", data);
+                localStorage.setItem("userName", data.name)
+                // localStorage.setItem("user", data);
                 location.href = 'index.html';
               } else {
                 alert("error user or password");

@@ -10,5 +10,6 @@ export default {
     // member
     memberList: baseUrl + "/member/listMemberByPage",
     addMember: baseUrl+"/member/addMember",
-    deleteMemberByIds: baseUrl +"/member/deleteMemberByIds"
+    deleteMemberByIds: baseUrl +"/member/deleteMemberByIds",
+    updateMemberPass: baseUrl +"/member/updateMemberPass",
 }
