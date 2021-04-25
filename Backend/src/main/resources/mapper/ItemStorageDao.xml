@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dql.retailmanager.dao.mapper.ItemStorageDao">
+    <resultMap id="BaseResultMap" type="com.dql.retailmanager.entity.ItemStorage">
+        <!--@mbg.generated-->
+        <result column="item_id" jdbcType="INTEGER" property="itemId"/>
+        <result column="storage_id" jdbcType="INTEGER" property="storageId"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="safe_number" jdbcType="INTEGER" property="safeNumber"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.dql.retailmanager.entity.ItemStorage">
+        <!--@mbg.generated-->
+        insert into item_storage (item_id, storage_id, `number`,
+        safe_number, update_time)
+        values (#{itemId,jdbcType=INTEGER}, #{storageId,jdbcType=INTEGER}, #{number,jdbcType=INTEGER},
+        #{safeNumber,jdbcType=INTEGER}, #{updateTime,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.dql.retailmanager.entity.ItemStorage">
+        <!--@mbg.generated-->
+        insert into item_storage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="storageId != null">
+                storage_id,
+            </if>
+            <if test="number != null">
+                `number`,
+            </if>
+            <if test="safeNumber != null">
+                safe_number,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                #{itemId,jdbcType=INTEGER},
+            </if>
+            <if test="storageId != null">
+                #{storageId,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="safeNumber != null">
+                #{safeNumber,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+</mapper>
