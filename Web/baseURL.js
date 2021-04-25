@@ -12,4 +12,14 @@ export default {
     addMember: baseUrl+"/member/addMember",
     deleteMemberByIds: baseUrl +"/member/deleteMemberByIds",
     updateMemberPass: baseUrl +"/member/updateMemberPass",
+    // item
+    itemList: baseUrl + "/item/listItemByPage",
+    addItem: baseUrl+"/item/addItem",
+    deleteItemByIds: baseUrl +"/item/deleteItemByIds",
+    updateItemById: baseUrl +"/item/updateItemById",
+    // storage
+    storageList: baseUrl + "/storage/listStorageByPage",
+    addStorage: baseUrl+"/storage/addStorage",
+    deleteStorageByIds: baseUrl +"/storage/deleteStorageByIds",
+    updateStorageById: baseUrl +"/storage/updateStorageById",
 }

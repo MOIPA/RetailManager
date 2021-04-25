@@ -2,15 +2,12 @@ package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.Member;
-import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.entity.form.SearchMemberForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
-import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IMemberService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/member")

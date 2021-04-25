@@ -1,6 +1,10 @@
 package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.page.PageRequest;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @Entity com.dql.retailmanager.entity.Item
@@ -35,4 +39,7 @@ public interface ItemDao {
      * @mbg.generated 2021-04-25 15:19:09
      */
     int updateByPrimaryKey(Item record);
+
+    @Select("select * from item")
+    List<Item> selectPage(PageRequest pageRequest);
 }
