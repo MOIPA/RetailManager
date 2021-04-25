@@ -2,7 +2,7 @@ package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.User;
-import com.dql.retailmanager.service.UserService;
+import com.dql.retailmanager.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 //@CrossOrigin
 public class UserController {
     @Resource
-    UserService userService;
+    IUserService userService;
     @Resource
     SessionDao sessionDao;
 
