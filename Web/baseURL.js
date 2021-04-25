@@ -22,4 +22,5 @@ export default {
     addStorage: baseUrl+"/storage/addStorage",
     deleteStorageByIds: baseUrl +"/storage/deleteStorageByIds",
     updateStorageById: baseUrl +"/storage/updateStorageById",
+    putItemInStorage: baseUrl +"/storage/putItemInStorage",
 }

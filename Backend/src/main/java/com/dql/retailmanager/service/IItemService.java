@@ -1,6 +1,7 @@
 package com.dql.retailmanager.service;
 
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,11 @@ public interface IItemService {
 
     int insertSelective(Item record);
 
-    Item selectByPrimaryId(Integer id);
+    Item getItemById(Integer id);
 
     int updateByPrimaryKeySelective(Item record);
 
     int updateById(Item record);
 
-    Object listItemByPage(PageRequest pageRequest);
+    Object listItemByPage(SearchForm pageRequest);
 }

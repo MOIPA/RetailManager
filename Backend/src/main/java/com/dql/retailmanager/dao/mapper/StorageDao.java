@@ -28,7 +28,7 @@ public interface StorageDao {
     /**
      * @mbg.generated 2021-04-25 15:20:02
      */
-    Storage selectByPrimaryKey(Integer id);
+    Storage getStorageById(Integer id);
 
     /**
      * @mbg.generated 2021-04-25 15:20:02

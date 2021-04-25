@@ -37,13 +37,7 @@
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
               <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="start" name="start" id="start">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="end" name="end" id="end">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <input type="text" name="username" placeholder="please enter item name" autocomplete="off"
+                <input type="text" name="itemname" placeholder="please enter item name" autocomplete="off"
                   class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
@@ -52,30 +46,23 @@
             </form>
           </div>
           <div class="layui-card-header">
-            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>batch
+            <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
               delete</button>
-            <button class="layui-btn" onclick="xadmin.open('add user','./item-add.html',600,400)"><i
+            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,200)"><i
                 class="layui-icon"></i>add</button>
           </div>
           <div class="layui-card-body layui-table-body layui-table-main">
-            <table class="layui-hide" id="item"></table>
+            <table class="layui-hide" id="item" lay-filter="item"></table>
           </div>
-          <!-- <div class="layui-card-body ">
-            <div class="page">
-              <div>
-                <a class="prev" href="">&lt;&lt;</a>
-                <a class="num" href="">1</a>
-                <span class="current">2</span>
-                <a class="num" href="">3</a>
-                <a class="num" href="">489</a>
-                <a class="next" href="">&gt;&gt;</a>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
   </div>
+
+  <script type="text/html" id="bar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
+  </script>
 
   <script type="module">
     import urlInfo from '../baseURL.js'
@@ -84,91 +71,88 @@
       var laydate = layui.laydate;
       var form = layui.form;
 
-      // 监听全选
-      form.on('checkbox(checkall)', function (data) {
-
-        if (data.elem.checked) {
-          $('tbody input').prop('checked', true);
-        } else {
-          $('tbody input').prop('checked', false);
-        }
-        form.render('checkbox');
-      });
-
-      //执行一个laydate实例
-      laydate.render({
-        elem: '#start' //指定元素
-      });
-
-      //执行一个laydate实例
-      laydate.render({
-        elem: '#end' //指定元素
-      });
-      var memberTable = table.render({
+      var itemTable = table.render({
         elem: '#item'
         , height: '650px'
+        , defaultToolbar: ['filter', 'exports', 'print', {
+          title: 'tips'
+          , layEvent: 'LAYTABLE_TIPS'
+          , icon: 'layui-icon-tips'
+        }]
         , method: 'post'
         , contentType: 'application/json'
-        , url: urlInfo.memberList
+        , url: urlInfo.itemList
         , cols: [[
-          {
-            width: 70
-            , templet: function (d) {
-              return '<input type="checkbox"  value="' + d.id + '" lay-skin="primary">'
-            }
-          }
-          , { field: 'id', title: 'ID', sort: true }
-          , { field: 'name', title: 'name' }
-          , { field: 'sex', title: 'sex', sort: true }
-          , { field: 'address', title: 'address' }
-          , { field: 'phone', title: 'phone', sort: true }
-          , { field: 'membernumber', title: 'item number', sort: true }
-          , { field: 'birthdate', title: 'birth day', sort: true }
-          , { field: 'status', title: 'status', sort: true }
+          { type: 'checkbox', fixed: 'left' }
+          , { field: 'id', width: 80, title: 'ID', sort: true }
+          , { field: 'name', width: 150, title: 'name' }
+          , { field: 'desc', title: 'desc', sort: true }
+          , { field: 'itemCode', title: 'itemCode' }
+          , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 150 }
         ]]
         , page: true
       });
 
       // 监听search
       form.on('submit(search)', function (data) {
-        console.log("do search item:" + data.field.username);
-        memberTable.reload({
+        console.log("do search item:" + data.field.itemname);
+        itemTable.reload({
           where: {
-            username: data.field.username
+            itemname: data.field.itemname
           }, page: {
             curr: 1 //重新从第 1 页开始 //
           }
         });
       });
-    });
-  </script>
-  <script>
-    // import urlInfo from '../baseURL.js'
-    function delAll(argument) {
-      var ids = [];
 
-      // 获取选中的id 
-      $('tbody input').each(function (index, el) {
-        if ($(this).prop('checked')) {
-          ids.push($(this).val())
+      var deleteByIds = (ids) => {
+        $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
+          if (data != null && data != "") {
+            layer.msg('delete success', { icon: 1 });
+            itemTable.reload();
+          } else {
+            layer.msg('delete failed', { icon: 1 });
+          }
+        });
+      }
+
+      //监听行工具事件
+      table.on('tool(item)', function (obj) {
+        var data = obj.data;
+        //console.log(obj)
+        if (obj.event === 'del') {
+          layer.confirm('relay delete this one ?', function (index) {
+            var ids = [];
+            ids.push(obj.data.id);
+            deleteByIds(ids);
+            obj.del();
+            layer.close(index);
+          });
+        } else if (obj.event === 'edit') {
+          debugger;
+          localStorage.setItem("itemId",obj.data.id);
+          localStorage.setItem("itemCode",obj.data.itemCode);
+          localStorage.setItem("itemName",obj.data.name);
+          localStorage.setItem("itemDesc",obj.data.desc);
+          xadmin.open('edit item', 'item-edit.html', 400, 200);
         }
       });
 
-      layer.confirm('delete？', function (index) {
-        //捉到所有被选中的，发异步进行删除
+      $("#delAll").click(function () {
+        var ids = [];
+        var checkStatus = table.checkStatus("item");
+        // 获取选中的id 
+        checkStatus.data.forEach((index) => console.log(ids.push(index.id)));
 
-        $.get("http://localhost:9999/api/item/deleteMemberByIds", { "ids": ids.toString() }, function (data, status) {
-          if (data != null && data != "") {
-            layer.msg('success', { icon: 1 });
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-          } else {
-            layer.msg('failed', { icon: 1 });
-          }
+        layer.confirm('delete？', function (index) {
+          //捉到所有被选中的，发异步进行删除
+          deleteByIds(ids);
         });
-        // layer.msg('success', { icon: 1 });
-        // $(".layui-form-checked").not('.header').parents('tr').remove();
+
       });
-    }
+
+    });
+
   </script>
 
 </body>

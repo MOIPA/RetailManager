@@ -1,8 +1,10 @@
 package com.dql.retailmanager.controller;
 
+import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -45,6 +47,11 @@ public class StorageController {
     @PostMapping("/listStorageByPage")
     public Object listStorageByPage(@RequestBody PageRequest pageRequest) {
         return storageService.listStorageByPage(pageRequest);
+    }
+
+    @PostMapping("/putItemInStorage")
+    public String putItemInStorage(@RequestBody ItemStorage record) {
+        return storageService.putItemInStorage(record);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.dql.retailmanager.controller;
 
-import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IItemService;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ public class ItemController {
 
     @GetMapping("/getItemById")
     public Item getItemById(@RequestParam int id) {
-        return itemService.selectByPrimaryId(id);
+        return itemService.getItemById(id);
     }
 
     @GetMapping("/deleteItemById")
@@ -44,7 +44,7 @@ public class ItemController {
     }
 
     @PostMapping("/listItemByPage")
-    public Object listItemByPage(@RequestBody PageRequest pageRequest) {
+    public Object listItemByPage(@RequestBody SearchForm pageRequest) {
         return itemService.listItemByPage(pageRequest);
     }
 

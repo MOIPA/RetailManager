@@ -1,7 +1,7 @@
 package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.Member;
-import com.dql.retailmanager.entity.form.SearchMemberForm;
+import com.dql.retailmanager.entity.form.SearchForm;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public interface MemberDao {
     int updateByPrimaryKey(Member record);
 
     @Select("select * from member where name like concat('%',#{username},'%')")
-    List<Member> selectPage(SearchMemberForm pageRequest);
+    List<Member> selectPage(SearchForm pageRequest);
 
     @Select("select * from member where name = #{name} and pwd = #{pass}")
     Member selectByName(String name, String pass);

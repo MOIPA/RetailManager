@@ -4,9 +4,14 @@ import com.dql.retailmanager.entity.page.PageRequest;
 import lombok.Data;
 
 @Data
-public class SearchMemberForm extends PageRequest {
+public class SearchForm extends PageRequest {
     /**
      * user name
      */
     private String username = "";
+
+    /**
+     * item name
+     */
+    private String itemname = "";
 }

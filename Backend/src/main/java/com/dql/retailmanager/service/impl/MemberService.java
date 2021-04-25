@@ -3,7 +3,7 @@ package com.dql.retailmanager.service.impl;
 import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.dao.mapper.MemberDao;
 import com.dql.retailmanager.entity.Member;
-import com.dql.retailmanager.entity.form.SearchMemberForm;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.service.IMemberService;
 import com.github.pagehelper.PageHelper;
@@ -56,7 +56,7 @@ public class MemberService implements IMemberService {
 
 
     @Override
-    public Object listMemberByPage(SearchMemberForm pageRequest) {
+    public Object listMemberByPage(SearchForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
 
@@ -67,7 +67,7 @@ public class MemberService implements IMemberService {
      * @return
      */
     @Override
-    public PageInfo<Member> getPageInfo(SearchMemberForm pageRequest) {
+    public PageInfo<Member> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);

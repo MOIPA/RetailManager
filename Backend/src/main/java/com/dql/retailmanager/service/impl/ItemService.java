@@ -1,9 +1,11 @@
 package com.dql.retailmanager.service.impl;
 
 import com.dql.retailmanager.Utils.PageUtils;
+import com.dql.retailmanager.Utils.Uuid;
 import com.dql.retailmanager.dao.mapper.ItemDao;
 import com.dql.retailmanager.entity.Item;
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IItemService;
@@ -26,6 +28,7 @@ public class ItemService implements IItemService {
 
     @Override
     public int addItem(Item record) {
+        record.setItemCode(Uuid.generateUUID());
         return dao.insert(record);
     }
 
@@ -35,7 +38,7 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public Item selectByPrimaryId(Integer id) {
+    public Item getItemById(Integer id) {
         return dao.selectByPrimaryKey(id);
     }
 
@@ -50,11 +53,11 @@ public class ItemService implements IItemService {
     }
 
     @Override
-    public Object listItemByPage(PageRequest pageRequest) {
+    public Object listItemByPage(SearchForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
 
-    public PageInfo<Item> getPageInfo(PageRequest pageRequest) {
+    public PageInfo<Item> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);

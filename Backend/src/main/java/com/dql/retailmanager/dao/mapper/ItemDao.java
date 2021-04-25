@@ -1,6 +1,7 @@
 package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import org.apache.ibatis.annotations.Select;
 
@@ -40,6 +41,6 @@ public interface ItemDao {
      */
     int updateByPrimaryKey(Item record);
 
-    @Select("select * from item")
-    List<Item> selectPage(PageRequest pageRequest);
+    @Select("select id,name,`desc`,item_code as itemCode from item where name like concat('%',#{itemname},'%')")
+    List<Item> selectPage(SearchForm pageRequest);
 }

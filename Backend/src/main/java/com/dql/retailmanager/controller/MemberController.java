@@ -2,7 +2,7 @@ package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.Member;
-import com.dql.retailmanager.entity.form.SearchMemberForm;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.service.IMemberService;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class MemberController {
     }
 
     @PostMapping("/listMemberByPage")
-    public Object listMemberByPage(@RequestBody SearchMemberForm pageRequest) {
+    public Object listMemberByPage(@RequestBody SearchForm pageRequest) {
         return memberService.listMemberByPage(pageRequest);
     }
 

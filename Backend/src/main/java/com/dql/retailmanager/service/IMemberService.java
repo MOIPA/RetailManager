@@ -1,7 +1,7 @@
 package com.dql.retailmanager.service;
 
 import com.dql.retailmanager.entity.Member;
-import com.dql.retailmanager.entity.form.SearchMemberForm;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public interface IMemberService {
   */
  int updateMember(Member member);
 
- Object listMemberByPage(SearchMemberForm pageRequest);
+ Object listMemberByPage(SearchForm pageRequest);
 
  /**
   * 调用分页插件完成分页
@@ -37,7 +37,7 @@ public interface IMemberService {
   * @param pageRequest
   * @return
   */
- PageInfo<Member> getPageInfo(SearchMemberForm pageRequest);
+ PageInfo<Member> getPageInfo(SearchForm pageRequest);
 
  int updateMemberPass(UpdateMemberForm memberForm);
 }

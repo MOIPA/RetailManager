@@ -1,7 +1,10 @@
 package com.dql.retailmanager.service.impl;
 
 import com.dql.retailmanager.Utils.PageUtils;
+import com.dql.retailmanager.dao.mapper.ItemStorageDao;
 import com.dql.retailmanager.dao.mapper.StorageDao;
+import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
@@ -15,36 +18,40 @@ import java.util.List;
 @Service
 public class StorageService implements IStorageService {
     @Resource
-    StorageDao dao;
+    StorageDao storageDao;
+    @Resource
+    ItemService itemService;
+    @Resource
+    ItemStorageDao itemStorageDao;
 
     @Override
     public int deleteById(Integer id) {
-        return dao.deleteByPrimaryKey(id);
+        return storageDao.deleteByPrimaryKey(id);
     }
 
     @Override
     public int addStorage(Storage record) {
-        return dao.insert(record);
+        return storageDao.insert(record);
     }
 
     @Override
     public int insertSelective(Storage record) {
-        return dao.insertSelective(record);
+        return storageDao.insertSelective(record);
     }
 
     @Override
     public Storage selectByPrimaryId(Integer id) {
-        return dao.selectByPrimaryKey(id);
+        return storageDao.getStorageById(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(Storage record) {
-        return dao.updateByPrimaryKeySelective(record);
+        return storageDao.updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateById(Storage record) {
-        return dao.updateByPrimaryKey(record);
+        return storageDao.updateByPrimaryKey(record);
     }
 
     @Override
@@ -52,11 +59,21 @@ public class StorageService implements IStorageService {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
 
+    @Override
+    public String putItemInStorage(ItemStorage record) {
+        Item item = this.itemService.getItemById(record.getItemId());
+        if (item == null) return "error no such item";
+        Storage storage = this.storageDao.getStorageById(record.getStorageId());
+        if (storage == null) return "error no such storage";
+        this.itemStorageDao.insert(record);
+        return "";
+    }
+
     public PageInfo<Storage> getPageInfo(PageRequest pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);
-        List<Storage> itemList = dao.selectPage(pageRequest);
+        List<Storage> itemList = storageDao.selectPage(pageRequest);
         return new PageInfo<Storage>(itemList);
     }
 
