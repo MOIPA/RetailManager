@@ -46,7 +46,7 @@
                 <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
-                <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
               </div>
             </form>
           </div>
@@ -102,7 +102,7 @@
       laydate.render({
         elem: '#end' //指定元素
       });
-      table.render({
+      var memberTable = table.render({
         elem: '#member'
         , method: 'post'
         , url: urlInfo.memberList
@@ -123,6 +123,15 @@
           , { field: 'status', title: 'status', sort: true }
         ]]
         , page: true
+      });
+
+      // 监听search
+      form.on('submit(search)',function(data){
+        debugger;
+        console.log("do search member");
+        memberTable.reload({where:{
+          username:data.field.username
+        }})
       });
     });
   </script>
