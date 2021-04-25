@@ -1,6 +1,7 @@
 package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.form.SearchMemberForm;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
@@ -42,12 +43,11 @@ public interface MemberDao {
     int updateByPrimaryKeySelective(Member record);
 
     /**
-     *
      * @mbg.generated 2021-04-23 14:38:39
      */
     int updateByPrimaryKey(Member record);
 
-    @Select("select * from member")
-    List<Member> selectPage();
+    @Select("select * from member where name like concat('%',#{username},'%') ")
+    List<Member> selectPage(SearchMemberForm pageRequest);
 
 }

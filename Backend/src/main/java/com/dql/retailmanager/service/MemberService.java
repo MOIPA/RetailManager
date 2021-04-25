@@ -3,6 +3,7 @@ package com.dql.retailmanager.service;
 import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.dao.mapper.MemberDao;
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.form.SearchMemberForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -49,19 +50,21 @@ public class MemberService {
     }
 
 
-    public Object listMemberByPage(PageRequest pageRequest) {
+    public Object listMemberByPage(SearchMemberForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
+
     /**
      * 调用分页插件完成分页
+     *
      * @param pageRequest
      * @return
      */
-    private PageInfo<Member> getPageInfo(PageRequest pageRequest) {
+    private PageInfo<Member> getPageInfo(SearchMemberForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);
-        List<Member> memberList = memberDao.selectPage();
+        List<Member> memberList = memberDao.selectPage(pageRequest);
         return new PageInfo<Member>(memberList);
     }
 }

@@ -8,5 +8,5 @@ public class SearchMemberForm extends PageRequest {
     /**
      * user name
      */
-    private String username;
+    private String username = "";
 }

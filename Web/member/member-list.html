@@ -46,7 +46,7 @@
                 <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
-                <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                <a class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></a>
               </div>
             </form>
           </div>
@@ -105,6 +105,7 @@
       var memberTable = table.render({
         elem: '#member'
         , method: 'post'
+        , contentType: 'application/json'
         , url: urlInfo.memberList
         , cols: [[
           {
@@ -126,12 +127,15 @@
       });
 
       // 监听search
-      form.on('submit(search)',function(data){
-        debugger;
-        console.log("do search member");
-        memberTable.reload({where:{
-          username:data.field.username
-        }})
+      form.on('submit(search)', function (data) {
+        console.log("do search member:" + data.field.username);
+        memberTable.reload({
+          where: {
+            username: data.field.username
+          }, page: {
+            curr: 1 //重新从第 1 页开始
+          }
+        });
       });
     });
   </script>
@@ -185,7 +189,7 @@
       layer.confirm('delete？', function (index) {
         //捉到所有被选中的，发异步进行删除
 
-        $.get("http://localhost:9999/api/member/deleteMemberByIds", {"ids":ids.toString()}, function (data, status) {
+        $.get("http://localhost:9999/api/member/deleteMemberByIds", { "ids": ids.toString() }, function (data, status) {
           if (data != null && data != "") {
             layer.msg('success', { icon: 1 });
             $(".layui-form-checked").not('.header').parents('tr').remove();
