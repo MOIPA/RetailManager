@@ -47,7 +47,9 @@ public interface MemberDao {
      */
     int updateByPrimaryKey(Member record);
 
-    @Select("select * from member where name like concat('%',#{username},'%') ")
+    @Select("select * from member where name like concat('%',#{username},'%')")
     List<Member> selectPage(SearchMemberForm pageRequest);
 
+    @Select("select * from member where name = #{name} and pwd = #{pass}")
+    Member selectByName(String name, String pass);
 }

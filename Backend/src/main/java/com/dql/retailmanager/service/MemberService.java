@@ -4,6 +4,7 @@ import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.dao.mapper.MemberDao;
 import com.dql.retailmanager.entity.Member;
 import com.dql.retailmanager.entity.form.SearchMemberForm;
+import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -66,5 +67,12 @@ public class MemberService {
         PageHelper.startPage(pageNum, pageSize);
         List<Member> memberList = memberDao.selectPage(pageRequest);
         return new PageInfo<Member>(memberList);
+    }
+
+    public int updateMemberPass(UpdateMemberForm memberForm) {
+        Member m = memberDao.selectByName(memberForm.getName(), memberForm.getOldpass());
+        if (m == null) return -2;
+        m.setPwd(memberForm.getNewpass());
+        return memberDao.updateByPrimaryKey(m);
     }
 }

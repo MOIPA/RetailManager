@@ -12,10 +12,11 @@
         <result column="memberNumber" jdbcType="VARCHAR" property="membernumber"/>
         <result column="birthDate" jdbcType="VARCHAR" property="birthdate"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, sex, address, phone, `status`, memberNumber,birthDate,email
+        id, `name`, sex, address, phone, `status`, memberNumber,birthDate,email,pwd
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -33,11 +34,11 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into member (`name`, sex, address,
-        phone, `status`, memberNumber, `birthDate` ,email
+        phone, `status`, memberNumber, `birthDate` ,email,pwd
         )
         values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
         #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{membernumber,jdbcType=VARCHAR}
-        , #{birthdate,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
+        , #{birthdate,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Member"
@@ -113,6 +114,9 @@
             <if test="email != null">
                 email = #{email,jdbcType=VARCHAR},
             </if>
+            <if test="email != null">
+                pwd = #{pwd,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -125,8 +129,9 @@
         phone = #{phone,jdbcType=VARCHAR},
         `status` = #{status,jdbcType=INTEGER},
         memberNumber = #{membernumber,jdbcType=VARCHAR},
-        birthDate = #{birthdate,jdbcType=VARCHAR}
-        email = #{email,jdbcType=VARCHAR}
+        birthDate = #{birthdate,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        pwd = #{pwd,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

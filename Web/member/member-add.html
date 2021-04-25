@@ -37,6 +37,18 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>password</label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
+                    <div class="layui-form-mid layui-word-aux">6-16character</div></div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                        <span class="x-red">*</span>confirm password</label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input"></div>
+                </div>
+                <div class="layui-form-item">
                     <label for="L_username" class="layui-form-label">
                         <span class="x-red">*</span>name</label>
                     <div class="layui-input-inline">
@@ -79,23 +91,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>密码</label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">6到16个字符</div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
-                        <span class="x-red">*</span>确认密码</label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div> -->
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label"></label>
                     <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
@@ -124,13 +119,13 @@
                 form.verify({
                     nikename: function (value) {
                         if (value.length < 5) {
-                            return '昵称至少得5个字符啊';
+                            return 'name should atleast 5characters';
                         }
                     },
-                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    pass: [/(.+){6,12}$/, 'password 6-16characters'],
                     repass: function (value) {
                         if ($('#L_pass').val() != $('#L_repass').val()) {
-                            return '两次密码不一致';
+                            return 'different password';
                         }
                     },
                     birthDate: function(value){
@@ -163,7 +158,8 @@
                                 "phone": data.field.phone,
                                 "sex": data.field.sex,
                                 "birthdate": data.field.L_birthdate,
-                                "membernumber": (Math.random() + "").substr(2)
+                                "membernumber": (Math.random() + "").substr(2,10),
+                                "pwd": data.field.L_pass
                             }),
                             dataType: "json",
                             success: function (message) {
