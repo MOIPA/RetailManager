@@ -6,6 +6,7 @@ import com.dql.retailmanager.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,9 +18,9 @@ public class UserController {
     SessionDao sessionDao;
 
     @GetMapping("/login")
-    public User getUserById(@RequestParam String name,@RequestParam String pwd,@RequestParam String sessionToken) {
+    public User getUserById(@RequestParam String name, @RequestParam String pwd, @RequestParam String sessionToken) {
         User user = userService.findUserByName(name);
-        if (user!=null && user.getPwd().equals(pwd.trim())){
+        if (user != null && user.getPwd().equals(pwd.trim())) {
             // 存储用户session
             sessionDao.deleteSessionByUserId(user.getId());
             sessionDao.insertSession(user.getId(), sessionToken);
@@ -27,6 +28,17 @@ public class UserController {
         }
         return null;
     }
+
+    @GetMapping("/getAuthorityByUserId")
+    public List<String> getUserAuthority(@RequestParam int userId) {
+        return userService.getUserAuthorityById(userId);
+    }
+
+    @GetMapping("/checkAuthority")
+    public int checkAuthority(@RequestParam int userId, @RequestParam String auth) {
+        return userService.checkAuthority(userId, auth);
+    }
+
     @GetMapping("/getUserById")
     public User getUserById(@RequestParam int id) {
         return userService.findUserById(id);

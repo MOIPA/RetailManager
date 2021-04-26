@@ -66,6 +66,7 @@
 
   <script type="module">
     import urlInfo from '../baseURL.js'
+    import { checkAuth } from '../js/checkAuthority.js'
     layui.use(['table', 'laydate'], function () {
       var table = layui.table;
       var laydate = layui.laydate;
@@ -106,13 +107,15 @@
       });
 
       var deleteByIds = (ids) => {
-        $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
-          if (data != null && data != "") {
-            layer.msg('delete success', { icon: 1 });
-            itemTable.reload();
-          } else {
-            layer.msg('delete failed', { icon: 1 });
-          }
+        checkAuth(localStorage.getItem("userId"), "item-management", () => {
+          $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
+            if (data != null && data != "") {
+              layer.msg('delete success', { icon: 1 });
+              itemTable.reload();
+            } else {
+              layer.msg('delete failed', { icon: 1 });
+            }
+          })
         });
       }
 
@@ -130,10 +133,10 @@
           });
         } else if (obj.event === 'edit') {
           debugger;
-          localStorage.setItem("itemId",obj.data.id);
-          localStorage.setItem("itemCode",obj.data.itemCode);
-          localStorage.setItem("itemName",obj.data.name);
-          localStorage.setItem("itemDesc",obj.data.desc);
+          localStorage.setItem("itemId", obj.data.id);
+          localStorage.setItem("itemCode", obj.data.itemCode);
+          localStorage.setItem("itemName", obj.data.name);
+          localStorage.setItem("itemDesc", obj.data.desc);
           xadmin.open('edit item', 'item-edit.html', 400, 200);
         }
       });

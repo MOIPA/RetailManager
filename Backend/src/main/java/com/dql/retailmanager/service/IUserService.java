@@ -5,6 +5,7 @@ import com.dql.retailmanager.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public interface IUserService {
@@ -42,4 +43,8 @@ public interface IUserService {
     int updateUser(User user);
 
     User findUserByName(String name);
+
+    List<String> getUserAuthorityById(int userId);
+
+    int checkAuthority(int userId, String auth);
 }

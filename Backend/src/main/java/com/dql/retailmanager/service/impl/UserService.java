@@ -6,6 +6,7 @@ import com.dql.retailmanager.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {
@@ -59,5 +60,18 @@ public class UserService implements IUserService {
     @Override
     public User findUserByName(String name) {
         return userDao.selectByName(name);
+    }
+
+    @Override
+    public List<String> getUserAuthorityById(int userId) {
+        return userDao.getUserAuthorityById(userId);
+    }
+
+    @Override
+    public int checkAuthority(int userId, String auth) {
+        List<String> userAuthorityById = userDao.getUserAuthorityById(userId);
+        if (userAuthorityById.stream().filter(x -> x.equals(auth)).count() > 0)
+            return 1;
+        return -1;
     }
 }

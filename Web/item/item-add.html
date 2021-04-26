@@ -46,34 +46,38 @@
             </form>
         </div>
     </div>
-    <script src="../lib/jquery-3.5.1.js"></script>
-    <script type="module">
-        import urlInfo from '../baseURL.js'
-        layui.use(['form', 'layer', 'jquery'],
-            function () {
-                $ = layui.jquery;
-                var form = layui.form,
-                    layer = layui.layer;
+</body>
+<script src="../lib/jquery-3.5.1.js"></script>
+<script type="module">
+    import urlInfo from '../baseURL.js'
+    import { checkAuth } from '../js/checkAuthority.js'
+    layui.use(['form', 'layer', 'jquery'],
+        function () {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
 
-                //自定义验证规则
-                form.verify({
-                    name: function (value) {
-                        if (value.length < 3) {
-                            return 'name shoule be atleast 3 characters';
-                        }
-                    },
-                    desc: function (value) {
-                        if (value.length < 1) {
-                            return 'name can not be empty';
-                        }
+            //自定义验证规则
+            form.verify({
+                name: function (value) {
+                    if (value.length < 3) {
+                        return 'name shoule be atleast 3 characters';
                     }
-                });
+                },
+                desc: function (value) {
+                    if (value.length < 1) {
+                        return 'name can not be empty';
+                    }
+                }
+            });
 
-                //监听提交
-                form.on('submit(add)',
-                    function (data) {
-                        console.log(data);
-                        //发异步，把数据提交
+
+            //监听提交
+            form.on('submit(add)',
+                function (data) {
+                    console.log(data);
+                    //发异步，把数据提交
+                    checkAuth(localStorage.getItem("userId"), "item-management", () => {
                         $.ajax({
                             type: "POST",
                             url: urlInfo.addItem,
@@ -100,12 +104,13 @@
                                 layer.msg("failed to add member");
                             }
                         });
-                        return false;
                     });
 
-            });
-    </script>
+                    return false;
+                });
 
-</body>
+        });
+</script>
+
 
 </html>

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @Entity com.dql.retailmanager.entity.User
  */
@@ -42,11 +44,12 @@ public interface UserDao {
     int updateByPrimaryKeySelective(User record);
 
     /**
-     *
      * @mbg.generated 2021-04-22 11:16:12
      */
     int updateByPrimaryKey(User record);
 
     @Select("select * from User where name=#{name}")
     User selectByName(@Param("name") String name);
+
+    List<String> getUserAuthorityById(int userId);
 }

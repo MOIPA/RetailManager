@@ -7,6 +7,8 @@ export default {
     login: baseUrl + "/user/login",
     // session 
     sessionCheck: baseUrl + "/session/check",
+    // auth check
+    authorityCheck: baseUrl + "/user/checkAuthority",
     // member
     memberList: baseUrl + "/member/listMemberByPage",
     addMember: baseUrl+"/member/addMember",

@@ -40,13 +40,18 @@
                     <label for="L_pass" class="layui-form-label">
                         <span class="x-red">*</span>password</label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
-                    <div class="layui-form-mid layui-word-aux">6-16character</div></div>
+                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">6-16character</div>
+                </div>
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label">
                         <span class="x-red">*</span>confirm password</label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input"></div>
+                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                            autocomplete="off" class="layui-input">
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="L_username" class="layui-form-label">
@@ -85,8 +90,8 @@
                         <span class="x-red">*</span>birth date</label>
                     <div class="layui-inline">
                         <div class="layui-inline ">
-                            <input class="layui-input" autocomplete="off" lay-verify="birthDate" placeholder="birth date" name="L_birthdate"
-                                id="L_birthdate">
+                            <input class="layui-input" autocomplete="off" lay-verify="birthDate"
+                                placeholder="birth date" name="L_birthdate" id="L_birthdate">
                         </div>
                     </div>
                 </div>
@@ -100,6 +105,7 @@
     </div>
     <script type="module">
         import urlInfo from '../baseURL.js'
+        import { checkAuth } from '../js/checkAuthority.js'
 
         layui.use(['form', 'layer', 'jquery', 'laydate'],
             function () {
@@ -128,13 +134,13 @@
                             return 'different password';
                         }
                     },
-                    birthDate: function(value){
-                        if (value.length==0) {
+                    birthDate: function (value) {
+                        if (value.length == 0) {
                             return 'please enter your birthday';
                         }
                     },
-                    phone:function(value){
-                        if (value.length==0) {
+                    phone: function (value) {
+                        if (value.length == 0) {
                             return 'please enter your phone number';
                         }
                     }
@@ -147,37 +153,39 @@
                             data
                         }));
                         //发异步，把数据提交
-                        $.ajax({
-                            type: "POST",
-                            url: urlInfo.addMember,
-                            contentType: "application/json;charset=utf-8",
-                            data: JSON.stringify({
-                                "email": data.field.email,
-                                "name": data.field.username,
-                                "address": data.field.address,
-                                "phone": data.field.phone,
-                                "sex": data.field.sex,
-                                "birthdate": data.field.L_birthdate,
-                                "membernumber": (Math.random() + "").substr(2,10),
-                                "pwd": data.field.L_pass
-                            }),
-                            dataType: "json",
-                            success: function (message) {
-                                layer.alert("success", {
-                                    icon: 6
-                                },
-                                    function () {
-                                        //关闭当前frame
-                                        xadmin.close();
+                        checkAuth(localStorage.getItem("userId"), "item-management", () => {
+                            $.ajax({
+                                type: "POST",
+                                url: urlInfo.addMember,
+                                contentType: "application/json;charset=utf-8",
+                                data: JSON.stringify({
+                                    "email": data.field.email,
+                                    "name": data.field.username,
+                                    "address": data.field.address,
+                                    "phone": data.field.phone,
+                                    "sex": data.field.sex,
+                                    "birthdate": data.field.L_birthdate,
+                                    "membernumber": (Math.random() + "").substr(2, 10),
+                                    "pwd": data.field.L_pass
+                                }),
+                                dataType: "json",
+                                success: function (message) {
+                                    layer.alert("success", {
+                                        icon: 6
+                                    },
+                                        function () {
+                                            //关闭当前frame
+                                            xadmin.close();
 
-                                        // 可以对父窗口进行刷新 
-                                        xadmin.father_reload();
-                                    }
-                                );
-                            },
-                            error: function (message) {
-                                layer.msg("failed to add member");
-                            }
+                                            // 可以对父窗口进行刷新 
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                },
+                                error: function (message) {
+                                    layer.msg("failed to add member");
+                                }
+                            });
                         });
                         return false;
                     });

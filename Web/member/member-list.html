@@ -52,7 +52,7 @@
             </form>
           </div>
           <div class="layui-card-header">
-            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>batch
+            <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
               delete</button>
             <button class="layui-btn" onclick="xadmin.open('add user','./member-add.html',600,400)"><i
                 class="layui-icon"></i>add</button>
@@ -77,8 +77,12 @@
     </div>
   </div>
 
+
+  <script src="../lib/jquery-3.5.1.js"></script>
   <script type="module">
     import urlInfo from '../baseURL.js'
+    import { checkAuth } from '../js/checkAuthority.js'
+
     layui.use(['table', 'laydate'], function () {
       var table = layui.table;
       var laydate = layui.laydate;
@@ -111,12 +115,7 @@
         , contentType: 'application/json'
         , url: urlInfo.memberList
         , cols: [[
-          {
-            width: 70
-            , templet: function (d) {
-              return '<input type="checkbox"  value="' + d.id + '" lay-skin="primary">'
-            }
-          }
+          { type: 'checkbox', fixed: 'left' }
           , { field: 'id', title: 'ID', sort: true }
           , { field: 'name', title: 'name' }
           , { field: 'sex', title: 'sex', sort: true }
@@ -140,70 +139,32 @@
           }
         });
       });
-    });
-  </script>
-  <script>
-    // import urlInfo from '../baseURL.js'
-    /*用户-停用*/
-    function member_stop(obj, id) {
-      layer.confirm('确认要停用吗？', function (index) {
+      $("#delAll").click(function () {
+        var ids = [];
+        var checkStatus = table.checkStatus("member");
+        // 获取选中的id 
+        checkStatus.data.forEach((index) => console.log(ids.push(index.id)));
 
-        if ($(obj).attr('title') == '启用') {
-
-          //发异步把用户状态进行更改
-          $(obj).attr('title', '停用')
-          $(obj).find('i').html('&#xe62f;');
-
-          $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-          layer.msg('已停用!', { icon: 5, time: 1000 });
-
-        } else {
-          $(obj).attr('title', '启用')
-          $(obj).find('i').html('&#xe601;');
-
-          $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-          layer.msg('已启用!', { icon: 5, time: 1000 });
-        }
-
-      });
-    }
-
-    /*用户-删除*/
-    function member_del(obj, id) {
-      layer.confirm('delete？', function (index) {
-        //发异步删除数据
-        $(obj).parents("tr").remove();
-        layer.msg('deleted!', { icon: 1, time: 1000 });
-      });
-    }
-
-
-
-    function delAll(argument) {
-      var ids = [];
-
-      // 获取选中的id 
-      $('tbody input').each(function (index, el) {
-        if ($(this).prop('checked')) {
-          ids.push($(this).val())
-        }
-      });
-
-      layer.confirm('delete？', function (index) {
-        //捉到所有被选中的，发异步进行删除
-
-        $.get("http://localhost:9999/api/member/deleteMemberByIds", { "ids": ids.toString() }, function (data, status) {
-          if (data != null && data != "") {
-            layer.msg('success', { icon: 1 });
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-          } else {
-            layer.msg('failed', { icon: 1 });
-          }
+        layer.confirm('delete？', function (index) {
+          //捉到所有被选中的，发异步进行删除
+          deleteByIds(ids);
         });
-        // layer.msg('success', { icon: 1 });
-        // $(".layui-form-checked").not('.header').parents('tr').remove();
+
       });
-    }
+      var deleteByIds = (ids) => {
+        checkAuth(localStorage.getItem("userId"), "member-management", () => {
+          $.get(urlInfo.deleteMemberByIds, { "ids": ids.toString() }, function (data, status) {
+            if (data != null && data != "") {
+              layer.msg('delete success', { icon: 1 });
+              memberTable.reload();
+            } else {
+              layer.msg('delete failed', { icon: 6 });
+            }
+          })
+        });
+      };
+
+    });
   </script>
 
 </body>
