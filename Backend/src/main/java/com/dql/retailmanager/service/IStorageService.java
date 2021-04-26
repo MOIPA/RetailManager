@@ -1,10 +1,12 @@
 package com.dql.retailmanager.service;
 
+import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
-import com.dql.retailmanager.entity.page.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface IStorageService {
@@ -23,4 +25,8 @@ public interface IStorageService {
     Object listStorageByPage(SearchForm pageRequest);
 
     String putItemInStorage(ItemStorage record);
+
+    List<ItemAndStorageInfo> getItemFromStorage(int storageId);
+
+    void deleteAllItem(Integer storageId);
 }

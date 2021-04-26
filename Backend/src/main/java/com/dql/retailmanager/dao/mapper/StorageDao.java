@@ -1,7 +1,9 @@
 package com.dql.retailmanager.dao.mapper;
 
+import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.page.PageRequest;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -42,4 +44,13 @@ public interface StorageDao {
 
 
     List<Storage> selectPage(PageRequest pageRequest);
+
+    @Select("select distinct item.name,item.desc,item.id itemId,item.item_code itemCode,number,safe_number safeNumber" +
+            " from item inner join item_storage on item.id = item_storage.item_id" +
+            " inner join storage on storage.id = item_storage.storage_id " +
+            " where storage.id = #{storageId}")
+    List<ItemAndStorageInfo> getItemFromStorage(int storageId);
+
+    @Delete("delete from item_storage where storage_id = #{storageId}")
+    void deleteAllItemByStorageId(Integer storageId);
 }

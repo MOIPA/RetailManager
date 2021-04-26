@@ -4,10 +4,10 @@ import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.dao.mapper.ItemStorageDao;
 import com.dql.retailmanager.dao.mapper.StorageDao;
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
-import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -68,6 +68,16 @@ public class StorageService implements IStorageService {
         if (storage == null) return "error no such storage";
         this.itemStorageDao.insert(record);
         return "";
+    }
+
+    @Override
+    public List<ItemAndStorageInfo> getItemFromStorage(int storageId) {
+        return storageDao.getItemFromStorage(storageId);
+    }
+
+    @Override
+    public void deleteAllItem(Integer storageId) {
+        storageDao.deleteAllItemByStorageId(storageId);
     }
 
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {

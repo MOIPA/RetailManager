@@ -1,5 +1,7 @@
 package com.dql.retailmanager.controller;
 
+import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
@@ -9,6 +11,9 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/storage")
@@ -51,8 +56,24 @@ public class StorageController {
     }
 
     @PostMapping("/putItemInStorage")
-    public String putItemInStorage(@RequestBody ItemStorage record) {
-        return storageService.putItemInStorage(record);
+    public String putItemInStorage(@RequestBody List<ItemStorage> record) {
+        // clear all
+        if (record.size() > 0) {
+            storageService.deleteAllItem(record.get(0).getStorageId());
+        }
+        try {
+            record.forEach(x -> {
+                x.setUpdateTime(new Date());
+                storageService.putItemInStorage(x);
+            });
+        } catch (Exception e) {
+            return "failed";
+        }
+        return "success";
     }
 
+    @GetMapping("/getItemFromStorage")
+    public List<ItemAndStorageInfo> getItemFromStorage(@RequestParam int storageId) {
+        return storageService.getItemFromStorage(storageId);
+    }
 }
