@@ -40,6 +40,6 @@ public interface StorageDao {
      */
     int updateByPrimaryKey(Storage record);
 
-    @Select("select * from storage")
+
     List<Storage> selectPage(PageRequest pageRequest);
 }

@@ -19,6 +19,22 @@
         from storage
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectPage" resultType="com.dql.retailmanager.entity.Storage">
+        select
+        <include refid="Base_Column_List"/>
+        from storage
+        where 1=1
+        <if test="start != null">
+            and update_time &gt; #{start}
+        </if>
+        <if test="end != null">
+            and update_time &lt; #{end}
+        </if>
+        <if test="storagename != null">
+            and name like concat('%',#{storagename},'%')
+        </if>
+
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
         delete from storage

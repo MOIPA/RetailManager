@@ -6,6 +6,7 @@ import com.dql.retailmanager.dao.mapper.StorageDao;
 import com.dql.retailmanager.entity.Item;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
@@ -55,7 +56,7 @@ public class StorageService implements IStorageService {
     }
 
     @Override
-    public Object listStorageByPage(PageRequest pageRequest) {
+    public Object listStorageByPage(SearchForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
 
@@ -69,7 +70,7 @@ public class StorageService implements IStorageService {
         return "";
     }
 
-    public PageInfo<Storage> getPageInfo(PageRequest pageRequest) {
+    public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);

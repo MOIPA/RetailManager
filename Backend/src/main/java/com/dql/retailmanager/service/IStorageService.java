@@ -2,6 +2,7 @@ package com.dql.retailmanager.service;
 
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public interface IStorageService {
 
     int updateById(Storage record);
 
-    Object listStorageByPage(PageRequest pageRequest);
+    Object listStorageByPage(SearchForm pageRequest);
 
     String putItemInStorage(ItemStorage record);
 }

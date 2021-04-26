@@ -2,6 +2,7 @@ package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import org.apache.ibatis.annotations.Param;
@@ -45,7 +46,7 @@ public class StorageController {
     }
 
     @PostMapping("/listStorageByPage")
-    public Object listStorageByPage(@RequestBody PageRequest pageRequest) {
+    public Object listStorageByPage(@RequestBody SearchForm pageRequest) {
         return storageService.listStorageByPage(pageRequest);
     }
 
