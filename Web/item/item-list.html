@@ -48,7 +48,7 @@
           <div class="layui-card-header">
             <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
               delete</button>
-            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,200)"><i
+            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,400)"><i
                 class="layui-icon"></i>add</button>
           </div>
           <div class="layui-card-body layui-table-body layui-table-main">
@@ -87,7 +87,8 @@
           { type: 'checkbox', fixed: 'left' }
           , { field: 'id', width: 80, title: 'ID', sort: true }
           , { field: 'name', width: 150, title: 'name' }
-          , { field: 'desc', title: 'desc', sort: true }
+          , { field: 'desc', title: 'desc' }
+          , { field: 'price', title: 'price', sort: true }
           , { field: 'itemCode', title: 'itemCode' }
           , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 150 }
         ]]
@@ -136,8 +137,9 @@
           localStorage.setItem("itemId", obj.data.id);
           localStorage.setItem("itemCode", obj.data.itemCode);
           localStorage.setItem("itemName", obj.data.name);
+          localStorage.setItem("itemPrice", obj.data.price);
           localStorage.setItem("itemDesc", obj.data.desc);
-          xadmin.open('edit item', 'item-edit.html', 400, 200);
+          xadmin.open('edit item', 'item-edit.html', 400, 400);
         }
       });
 

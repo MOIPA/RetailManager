@@ -24,83 +24,87 @@
 <body>
     <div class="layui-fluid">
         <div class="layui-row">
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <label for="L_email" class="layui-form-label">
-                        <span class="x-red">*</span>email</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">
-                        <span class="x-red">*</span>can be your login name
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>password</label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">6-16character</div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
-                        <span class="x-red">*</span>confirm password</label>
-                    <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_username" class="layui-form-label">
-                        <span class="x-red">*</span>name</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_address" class="layui-form-label">
-                        <span class="x-red">*</span>address</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_address" name="address" required="" lay-verify="address"
-                            autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_phone" class="layui-form-label">
-                        <span class="x-red">*</span>phone</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_phone" name="phone" required="" lay-verify="phone" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">sex</label>
-                    <div class="layui-input-block">
-                        <input type="radio" name="sex" value="male" title="male" checked="">
-                        <input type="radio" name="sex" value="female" title="female">
-                        <!-- <input type="radio" name="sex" value="禁" title="禁用" disabled=""> -->
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_birthdate" class="layui-form-label">
-                        <span class="x-red">*</span>birth date</label>
-                    <div class="layui-inline">
-                        <div class="layui-inline ">
-                            <input class="layui-input" autocomplete="off" lay-verify="birthDate"
-                                placeholder="birth date" name="L_birthdate" id="L_birthdate">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="L_email" class="layui-form-label">
+                                <span class="x-red">*</span>email</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">
+                                <span class="x-red">*</span>can be your login name
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="layui-form-item">
+                            <label for="L_pass" class="layui-form-label">
+                                <span class="x-red">*</span>password</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">6-16character</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label">
+                                <span class="x-red">*</span>confirm password</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_username" class="layui-form-label">
+                                <span class="x-red">*</span>name</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_address" class="layui-form-label">
+                                <span class="x-red">*</span>address</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_address" name="address" required="" lay-verify="address"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_phone" class="layui-form-label">
+                                <span class="x-red">*</span>phone</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_phone" name="phone" required="" lay-verify="phone"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">sex</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="sex" value="male" title="male" checked="">
+                                <input type="radio" name="sex" value="female" title="female">
+                                <!-- <input type="radio" name="sex" value="禁" title="禁用" disabled=""> -->
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_birthdate" class="layui-form-label">
+                                <span class="x-red">*</span>birth date</label>
+                            <div class="layui-inline">
+                                <div class="layui-inline ">
+                                    <input class="layui-input" autocomplete="off" lay-verify="birthDate"
+                                        placeholder="birth date" name="L_birthdate" id="L_birthdate">
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label"></label>
-                    <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label"></label>
+                            <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <script type="module">

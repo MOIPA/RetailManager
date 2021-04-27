@@ -22,28 +22,40 @@
 <body>
     <div class="layui-fluid">
         <div class="layui-row">
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <label for="L_name" class="layui-form-label">
-                        <span class="x-red">*</span>name</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_name" name="name" required="" lay-verify="name" autocomplete="off"
-                            class="layui-input">
-                    </div>
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="L_name" class="layui-form-label">
+                                <span class="x-red">*</span>name</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_name" name="name" required="" lay-verify="name"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_desc" class="layui-form-label">
+                                <span class="x-red">*</span>description</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_desc" name="desc" required="" lay-verify="desc"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_price" class="layui-form-label">
+                                <span class="x-red">*</span>price</label>
+                            <div class="layui-input-inline">
+                                <input type="number" id="L_price" name="price" required="" lay-verify="price"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label"></label>
+                            <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="layui-form-item">
-                    <label for="L_desc" class="layui-form-label">
-                        <span class="x-red">*</span>description</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_desc" name="desc" required="" lay-verify="desc" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label"></label>
-                    <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </body>
@@ -68,6 +80,11 @@
                     if (value.length < 1) {
                         return 'name can not be empty';
                     }
+                },
+                price: function (value) {
+                    if (value < 0) {
+                        return 'price can not be negative';
+                    }
                 }
             });
 
@@ -85,35 +102,36 @@
                             data: JSON.stringify({
                                 "name": data.field.name,
                                 "desc": data.field.desc,
+                                "price": data.field.price,
                             }),
                             dataType: "json",
                             success: function (message) {
-                                if(message==-2){
+                                if (message == -2) {
                                     layer.alert("already exist same item", {
-                                    icon: 2
-                                },
-                                    function () {
-                                        //关闭当前frame
-                                        xadmin.close();
+                                        icon: 2
+                                    },
+                                        function () {
+                                            //关闭当前frame
+                                            xadmin.close();
 
-                                        // 可以对父窗口进行刷新 
-                                        xadmin.father_reload();
-                                    }
-                                );
-                                }else{
+                                            // 可以对父窗口进行刷新 
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                } else {
                                     layer.alert("add item success", {
-                                    icon: 6
-                                },
-                                    function () {
-                                        //关闭当前frame
-                                        xadmin.close();
+                                        icon: 6
+                                    },
+                                        function () {
+                                            //关闭当前frame
+                                            xadmin.close();
 
-                                        // 可以对父窗口进行刷新 
-                                        xadmin.father_reload();
-                                    }
-                                );
+                                            // 可以对父窗口进行刷新 
+                                            xadmin.father_reload();
+                                        }
+                                    );
                                 }
-                                
+
                             },
                             error: function (message) {
                                 layer.msg("failed to add member");

@@ -4,13 +4,14 @@
     <resultMap id="BaseResultMap" type="com.dql.retailmanager.entity.Item">
         <!--@mbg.generated-->
         <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="item_code" jdbcType="VARCHAR" property="itemCode"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
-        id, `name`, `desc`, item_code
+        id, `name`, `desc`, item_code,price
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -27,9 +28,12 @@
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Item"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into item (`name`, `desc`, item_code
+        insert into item (`name`, `desc`, item_code, price
         )
-        values (#{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}
+        values (#{name,jdbcType=VARCHAR},
+        #{desc,jdbcType=VARCHAR},
+        #{itemCode,jdbcType=VARCHAR},
+        #{price,jdbcType=INTEGER}
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Item"
@@ -80,7 +84,8 @@
         update item
         set `name` = #{name,jdbcType=VARCHAR},
         `desc` = #{desc,jdbcType=VARCHAR},
-        item_code = #{itemCode,jdbcType=VARCHAR}
+        item_code = #{itemCode,jdbcType=VARCHAR},
+        price = #{price,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

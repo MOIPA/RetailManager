@@ -22,34 +22,46 @@
 <body>
     <div class="layui-fluid">
         <div class="layui-row">
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <label for="L_name" class="layui-form-label">
-                        <span class="x-red">*</span>name</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_name" name="name" required="" lay-verify="name" autocomplete="off"
-                            class="layui-input">
-                    </div>
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="L_name" class="layui-form-label">
+                                <span class="x-red">*</span>name</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_name" name="name" required="" lay-verify="name"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_desc" class="layui-form-label">
+                                <span class="x-red">*</span>description</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_desc" name="desc" required="" lay-verify="desc"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_price" class="layui-form-label">
+                                <span class="x-red">*</span>price</label>
+                            <div class="layui-input-inline">
+                                <input type="number" id="L_price" name="price" required="" lay-verify="price"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label"></label>
+                            <button class="layui-btn" lay-filter="add" lay-submit="">update</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="layui-form-item">
-                    <label for="L_desc" class="layui-form-label">
-                        <span class="x-red">*</span>description</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_desc" name="desc" required="" lay-verify="desc" autocomplete="off"
-                            class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label"></label>
-                    <button class="layui-btn" lay-filter="add" lay-submit="">update</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
     <script src="../lib/jquery-3.5.1.js"></script>
     <script type="module">
         import urlInfo from '../baseURL.js'
-        import { checkAuth } from   '../js/checkAuthority.js'
+        import { checkAuth } from '../js/checkAuthority.js'
 
         layui.use(['form', 'layer', 'jquery'],
             function () {
@@ -58,6 +70,7 @@
                     layer = layui.layer;
                 $("#L_name").val(localStorage.getItem("itemName"));
                 $("#L_desc").val(localStorage.getItem("itemDesc"));
+                $("#L_price").val(localStorage.getItem("itemPrice"));
 
                 //自定义验证规则
                 form.verify({
@@ -69,6 +82,11 @@
                     desc: function (value) {
                         if (value.length < 1) {
                             return 'name can not be empty';
+                        }
+                    },
+                    price: function (value) {
+                        if (value < 0) {
+                            return 'price can not be negative';
                         }
                     }
                 });
@@ -87,6 +105,7 @@
                                     "id": localStorage.getItem("itemId"),
                                     "name": data.field.name,
                                     "desc": data.field.desc,
+                                    "price": data.field.price,
                                     "itemCode": localStorage.getItem("itemCode"),
                                 }),
                                 dataType: "json",
