@@ -19,6 +19,8 @@ public class SearchForm extends PageRequest {
 
     private String storagename = "";
 
+    private int storageId;
+
     private Date start = null;
 
     private Date end = null;

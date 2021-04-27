@@ -29,4 +29,8 @@ public interface IStorageService {
     List<ItemAndStorageInfo> getItemFromStorage(int storageId);
 
     void deleteAllItem(Integer storageId);
+
+    Object getItemFromStorageByPage(SearchForm pageRequest);
+
+    int deleteItemFromStorage(int[] itemIds, int storageId);
 }

@@ -88,7 +88,20 @@
                             }),
                             dataType: "json",
                             success: function (message) {
-                                layer.alert("add item success", {
+                                if(message==-2){
+                                    layer.alert("already exist same item", {
+                                    icon: 2
+                                },
+                                    function () {
+                                        //关闭当前frame
+                                        xadmin.close();
+
+                                        // 可以对父窗口进行刷新 
+                                        xadmin.father_reload();
+                                    }
+                                );
+                                }else{
+                                    layer.alert("add item success", {
                                     icon: 6
                                 },
                                     function () {
@@ -99,6 +112,8 @@
                                         xadmin.father_reload();
                                     }
                                 );
+                                }
+                                
                             },
                             error: function (message) {
                                 layer.msg("failed to add member");

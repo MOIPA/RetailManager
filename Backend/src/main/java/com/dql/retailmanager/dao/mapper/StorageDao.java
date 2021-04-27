@@ -2,6 +2,7 @@ package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.Storage;
+import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
@@ -53,4 +54,6 @@ public interface StorageDao {
 
     @Delete("delete from item_storage where storage_id = #{storageId}")
     void deleteAllItemByStorageId(Integer storageId);
+
+    List<ItemAndStorageInfo> selectItemByPage(SearchForm pageRequest);
 }

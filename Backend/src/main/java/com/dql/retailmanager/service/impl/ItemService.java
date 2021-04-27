@@ -28,6 +28,8 @@ public class ItemService implements IItemService {
 
     @Override
     public int addItem(Item record) {
+        List<Item> list = dao.getItemByName(record.getName());
+        if (list.size() > 0) return -2;
         record.setItemCode(Uuid.generateUUID());
         return dao.insert(record);
     }

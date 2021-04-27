@@ -76,4 +76,15 @@ public class StorageController {
     public List<ItemAndStorageInfo> getItemFromStorage(@RequestParam int storageId) {
         return storageService.getItemFromStorage(storageId);
     }
+
+    @PostMapping("/getItemFromStorageByPage")
+    public Object getItemFromStorageByPage(@RequestBody SearchForm pageRequest) {
+        return storageService.getItemFromStorageByPage(pageRequest);
+    }
+
+    @GetMapping("/deleteItemFromStorage")
+    public int deleteItemFromStorage(@RequestParam int[] itemIds, @RequestParam int storageId) {
+        storageService.deleteItemFromStorage(itemIds, storageId);
+        return 1;
+    }
 }

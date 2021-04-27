@@ -43,4 +43,7 @@ public interface ItemDao {
 
     @Select("select id,name,`desc`,item_code as itemCode from item where name like concat('%',#{itemname},'%')")
     List<Item> selectPage(SearchForm pageRequest);
+
+    @Select("select * from item where name = #{name}")
+    List<Item> getItemByName(String name);
 }

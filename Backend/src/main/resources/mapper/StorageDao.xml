@@ -35,6 +35,24 @@
         </if>
 
     </select>
+    <select id="selectItemByPage" resultType="com.dql.retailmanager.entity.ItemAndStorageInfo">
+        select distinct item.name, item.desc, item.id itemId,
+        item.item_code itemCode, `number`, safe_number safeNumber,
+        item_storage.update_time updateTime
+        from item
+        inner join item_storage on item.id = item_storage.item_id
+        inner join storage on storage.id = item_storage.storage_id
+        where storage.id = #{storageId}
+        <if test="start != null">
+            and item_storage.update_time &gt; #{start}
+        </if>
+        <if test="end != null">
+            and item_storage.ipdate_time &lt; #{end}
+        </if>
+        <if test="itemname !=null">
+            and item.name like concat('%',#{itemname},'%')
+        </if>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         <!--@mbg.generated-->
         delete from storage

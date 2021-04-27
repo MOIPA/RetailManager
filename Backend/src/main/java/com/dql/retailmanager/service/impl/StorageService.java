@@ -80,12 +80,34 @@ public class StorageService implements IStorageService {
         storageDao.deleteAllItemByStorageId(storageId);
     }
 
+    @Override
+    public Object getItemFromStorageByPage(SearchForm pageRequest) {
+        return PageUtils.getPageResult(pageRequest, getItemPageInfo(pageRequest));
+    }
+
+    @Override
+    public int deleteItemFromStorage(int[] itemIds, int storageId) {
+        for (int itemId : itemIds) {
+            this.itemStorageDao.deleteItemFromStorage(itemId, storageId);
+        }
+        return 0;
+    }
+
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();
         PageHelper.startPage(pageNum, pageSize);
         List<Storage> itemList = storageDao.selectPage(pageRequest);
         return new PageInfo<Storage>(itemList);
+    }
+
+
+    public PageInfo<ItemAndStorageInfo> getItemPageInfo(SearchForm pageRequest) {
+        int pageNum = pageRequest.getPage();
+        int pageSize = pageRequest.getLimit();
+        PageHelper.startPage(pageNum, pageSize);
+        List<ItemAndStorageInfo> itemList = storageDao.selectItemByPage(pageRequest);
+        return new PageInfo<ItemAndStorageInfo>(itemList);
     }
 
 }
