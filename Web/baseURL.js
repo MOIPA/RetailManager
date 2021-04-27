@@ -28,5 +28,11 @@ export default {
     putItemInStorage: baseUrl + "/storage/putItemInStorage",
     getItemFromStorage: baseUrl + "/storage/getItemFromStorage",
     getItemFromStorageByPage: baseUrl + "/storage/getItemFromStorageByPage",
-    deleteItemFromStorage: baseUrl + "/storage/deleteItemFromStorage"
+    deleteItemFromStorage: baseUrl + "/storage/deleteItemFromStorage",
+    // account
+    accountList: baseUrl + "/account/listAccountByPage",
+    addAccount: baseUrl + "/account/addAccount",
+    deleteAccountByIds: baseUrl + "/account/deleteAccountByIds",
+    updateAccountById: baseUrl + "/account/updateAccountById",
+    activeAccountById: baseUrl + "/account/activeAccountById",
 }

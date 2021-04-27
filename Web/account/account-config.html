@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>item management</title>
+  <title>account management</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport"
@@ -22,9 +22,9 @@
   <div class="x-nav">
     <span class="layui-breadcrumb">
       <a href="">main</a>
-      <a href="">item</a>
+      <a href="">acount</a>
       <a>
-        <cite>item-list</cite></a>
+        <cite>account config</cite></a>
     </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       onclick="location.reload()" title="refresh">
@@ -37,7 +37,7 @@
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
               <div class="layui-inline layui-show-xs-block">
-                <input type="text" name="itemname" placeholder="please enter item name" autocomplete="off"
+                <input type="text" name="bankname" placeholder="please enter bank name" autocomplete="off"
                   class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
@@ -48,11 +48,11 @@
           <div class="layui-card-header">
             <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
               delete</button>
-            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,400)"><i
+            <button class="layui-btn" onclick="xadmin.open('add account','./account-add.html',600,470)"><i
                 class="layui-icon"></i>add</button>
           </div>
           <div class="layui-card-body layui-table-body layui-table-main">
-            <table class="layui-hide" id="item" lay-filter="item"></table>
+            <table class="layui-hide" id="account" lay-filter="account"></table>
           </div>
         </div>
       </div>
@@ -72,8 +72,8 @@
       var laydate = layui.laydate;
       var form = layui.form;
 
-      var itemTable = table.render({
-        elem: '#item'
+      var accountTable = table.render({
+        elem: '#account'
         , height: '650px'
         , defaultToolbar: ['filter', 'exports', 'print', {
           title: 'tips'
@@ -82,14 +82,22 @@
         }]
         , method: 'post'
         , contentType: 'application/json'
-        , url: urlInfo.itemList
+        , url: urlInfo.accountList
         , cols: [[
           { type: 'checkbox', fixed: 'left' }
           , { field: 'id', width: 80, title: 'ID', sort: true }
-          , { field: 'name', width: 150, title: 'name' }
-          , { field: 'desc', title: 'desc' }
-          , { field: 'price', title: 'price', sort: true }
-          , { field: 'itemCode', title: 'itemCode' }
+          , { field: 'bankName', width: 150, title: 'bankName' }
+          , { field: 'code', title: 'code' }
+          , { field: 'initialMoney', title: 'initialMoney', sort: true }
+          , { field: 'currentMoney', title: 'currentMoney', sort: true }
+          , { field: 'remark', title: 'remark' }
+          , {
+            field: 'active', title: 'active', templet: function (d) {
+              if (d.active == 1) {
+                return "<input type=\"checkbox\" name=\"aaa\" lay-skin=\"switch\" disabled checked>";
+              } else return "<input type=\"checkbox\" name=\"aaa\" lay-skin=\"switch\" disabled >";
+            }
+          }
           , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 150 }
         ]]
         , page: true
@@ -97,10 +105,10 @@
 
       // 监听search
       form.on('submit(search)', function (data) {
-        console.log("do search item:" + data.field.itemname);
-        itemTable.reload({
+        console.log("do search account:" + data.field.bankname);
+        accountTable.reload({
           where: {
-            itemname: data.field.itemname
+            bankname: data.field.bankname
           }, page: {
             curr: 1 //重新从第 1 页开始 //
           }
@@ -108,11 +116,11 @@
       });
 
       var deleteByIds = (ids) => {
-        checkAuth(localStorage.getItem("userId"), "item-management", () => {
-          $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
+        checkAuth(localStorage.getItem("userId"), "account-management", () => {
+          $.get(urlInfo.deleteAccountByIds, { "ids": ids.toString() }, function (data, status) {
             if (data != null && data != "") {
               layer.msg('delete success', { icon: 1 });
-              itemTable.reload();
+              accountTable.reload();
             } else {
               layer.msg('delete failed', { icon: 1 });
             }
@@ -121,7 +129,7 @@
       }
 
       //监听行工具事件
-      table.on('tool(item)', function (obj) {
+      table.on('tool(account)', function (obj) {
         var data = obj.data;
         //console.log(obj)
         if (obj.event === 'del') {
@@ -133,19 +141,21 @@
             layer.close(index);
           });
         } else if (obj.event === 'edit') {
-          debugger;
-          localStorage.setItem("itemId", obj.data.id);
-          localStorage.setItem("itemCode", obj.data.itemCode);
-          localStorage.setItem("itemName", obj.data.name);
-          localStorage.setItem("itemPrice", obj.data.price);
-          localStorage.setItem("itemDesc", obj.data.desc);
-          xadmin.open('edit item', 'item-edit.html', 400, 400);
+          localStorage.setItem("accountId", obj.data.id);
+          localStorage.setItem("accountBankName", obj.data.bankName);
+          localStorage.setItem("accountCode", obj.data.code);
+          localStorage.setItem("accountInitialMoney", obj.data.initialMoney);
+          localStorage.setItem("accountCurrentMoney", obj.data.currentMoney);
+          localStorage.setItem("accountRemark", obj.data.remark);
+          localStorage.setItem("accountActive", obj.data.active == 1 ? true : false);
+
+          xadmin.open('edit account', 'account-edit.html', 400, 480);
         }
       });
 
       $("#delAll").click(function () {
         var ids = [];
-        var checkStatus = table.checkStatus("item");
+        var checkStatus = table.checkStatus("account");
         // 获取选中的id 
         checkStatus.data.forEach((index) => console.log(ids.push(index.id)));
 

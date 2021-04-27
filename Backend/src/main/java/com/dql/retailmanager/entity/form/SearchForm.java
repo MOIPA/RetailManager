@@ -19,7 +19,11 @@ public class SearchForm extends PageRequest {
 
     private String storagename = "";
 
+    private String bankname = "";
+
     private int storageId;
+
+    private int itemId;
 
     private Date start = null;
 
