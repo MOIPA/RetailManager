@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>storage management</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <div class="layui-fluid" style="text-align: center;">
+        <div class="layui-card">
+            <div class="layui-card-body ">
+                <div class="layui-row">
+                    <form class="layui-form">
+                        <div id="transfer"></div>
+                        <div class="layui-form-item" style="margin-top: 30px;">
+                            <a class="layui-btn" lay-filter="put" lay-submit="">confirm</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<div id="itemNumber" style="display: none;">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label for="L_safe_number" class="layui-form-label">
+                        <span class="x-red">*</span>safe number</label>
+                    <div class="layui-input-inline">
+                        <input type="number" id="L_safe_number" name="safe_number" required="" lay-verify="safe_number"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span class="x-red">*</span>under this number you will be infromed
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_number" class="layui-form-label">
+                        <span class="x-red">*</span>number</label>
+                    <div class="layui-input-inline">
+                        <input type="number" id="L_number" name="number" required="" lay-verify="number"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">>0</div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label"></label>
+                    <a class="layui-btn" lay-filter="add" lay-submit="">confirm</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="../lib/jquery-3.5.1.js"></script>
+<script type="module">
+    import urlInfo from '../baseURL.js'
+    import { checkAuth } from '../js/checkAuthority.js'
+    layui.use(['form', 'layer', 'jquery', 'transfer'],
+        function () {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+            // 隐藏输入框
+            var transfer = layui.transfer;
+            var itemList = [];
+            // 获得所有商品数据
+            $.ajax({
+                type: "POST",
+                url: urlInfo.itemList,
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                }),
+                dataType: "json",
+                success: function (message) {
+                    message.data.forEach(x => { itemList.push({ "value": x.id, "title": x.name, "disabled": "", "checked": "" }) });
+                },
+                error: function (message) {
+                    layer.msg("failed to search item");
+                },
+                async: false
+            });
+            var storageItem = [];
+            var choosedItem = [];
+            // 获得所有仓库的商品id
+            $.ajax({
+                type: "GET",
+                url: urlInfo.getItemFromStorage,
+                contentType: "application/json;charset=utf-8",
+                data: { "storageId": localStorage.getItem("storageId") },
+                dataType: "json",
+                success: function (message) {
+                    if (message != null && message.length != 0) {
+                        message.forEach(x => {
+                            storageItem.push({
+                                "value": x.itemId, "title": x.name + " ==> " + x.number, "disabled": "", "checked": ""
+                                , "storageId": localStorage.getItem("storageId"), "itemId": x.itemId, "number": x.number, "safeNumber": x.safeNumber
+                            })
+                            choosedItem.push(x.itemId);
+                        });
+                    }
+                    // 去重 合并
+                    var resList = [];
+                    for (let i = 0; i < itemList.length; i++) {
+                        const item = itemList[i];
+                        var isExist = -1;
+                        for (let j = 0; j < storageItem.length; j++) {
+                            const si = storageItem[j];
+                            if (item.value == si.value) isExist = 1;
+                        }
+                        if (isExist == -1) {
+                            resList.push(item);
+                        }
+                    }
+                    itemList = resList.concat(storageItem);
+
+                },
+                error: function (message) {
+                    layer.msg("failed to search storage item");
+                },
+                async: false
+            });
+            //渲染
+            transfer.render({
+                elem: '#transfer'  //绑定元素
+                , data: itemList
+                , id: 'transfer' //定义索引
+                , value: choosedItem
+                , title: ['all item', 'storage item and number']
+                , onchange: function (data, index) {
+                    if (index == 0) {
+                        var currentItemId = [];
+                        data.forEach(x => currentItemId.push([x.value, x.title]));
+                        localStorage.setItem("currentItemId", JSON.stringify(currentItemId));
+                        layer.open({
+                            type: 1,
+                            content: $('#itemNumber') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            , cancel: function (index, layero) {
+                                // if (confirm('are you sure close this window ?')) {
+                                $("#itemNumber").hide();
+                                layer.close(index)
+                                // }
+                                return false;
+                            }
+                        });
+                    } else {
+                        // data.title = data.title.replace(/[\d| ]/g,'');
+                        data.forEach(x => {
+                            itemList.map(y => {
+                                if (y.value == x.value) y.title = y.title.replace(/[\d| ]/g, '');
+                            });
+                            storageItem = storageItem.filter(y => {
+                                if (y.value == x.value) return false;
+                                return true;
+                            });
+                            choosedItem = choosedItem.filter(y => {
+                                if (y.value == x.value) return false;
+                                return true;
+                            })
+                            // x.title = x.title.replace(/[\d| ]/g,'');
+                        });
+                        transfer.reload('transfer', {
+                            data: itemList
+                        });
+                    }
+
+                    // console.log(data); //得到当前被穿梭的数据
+                    // console.log(index); //如果数据来自左边，index 为 0，否则为 1
+                }
+            });
+
+            form.verify({
+                safe_number: function (value) {
+                    if (value.length < 0) {
+                        return 'invalid number';
+                    }
+                },
+                number: function (value) {
+                    if (value.length < 0) {
+                        return 'invalid number';
+                    }
+                }
+            });
+            //监听提交
+            form.on('submit(add)',
+                function (data) {
+                    JSON.parse(localStorage.getItem("currentItemId")).forEach(x => {
+                        storageItem.push({
+                            "value": x[0], "title": x[1] + " ==> " + data.field.number, "disabled": "", "checked": ""
+                            , "storageId": localStorage.getItem("storageId"), "itemId": x[0],
+                            "number": data.field.number, "safeNumber": data.field.safe_number
+                        });
+                        choosedItem.push(x[0]);
+                    });
+                    $("#itemNumber").hide();
+                    // 去重
+                    var resList = [];
+                    for (let i = 0; i < itemList.length; i++) {
+                        const item = itemList[i];
+                        var isExist = -1;
+                        for (let j = 0; j < storageItem.length; j++) {
+                            const si = storageItem[j];
+                            if (item.value == si.value) isExist = 1;
+                        }
+                        if (isExist == -1) {
+                            resList.push(item);
+                        }
+                    }
+                    itemList = resList.concat(storageItem);
+                    transfer.reload('transfer', {
+                        data: itemList
+                    });
+                    layer.close(layer.index);
+                });
+
+            form.on('submit(put)', function (data) {
+                checkAuth(localStorage.getItem("userId"), "storage-management", () => {
+                    $.ajax({
+                        type: "POST",
+                        url: urlInfo.putItemInStorage,
+                        contentType: "application/json;charset=utf-8",
+                        data: JSON.stringify(storageItem),
+                        dataType: "json",
+                        success: function (message) {
+                            layer.close(layer.index);
+                        },
+                        error: function (message) {
+                            layer.close(layer.index);
+                        },
+                        async: false
+                    });
+                });
+                layer.msg("operation succeed");
+            });
+
+        });
+</script>
+
+
+</html>
