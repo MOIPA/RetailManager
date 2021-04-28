@@ -73,8 +73,9 @@
     </div>
 
     <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
-  </script>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
+    </script>
 
     <script type="module">
         import urlInfo from '../baseURL.js'
@@ -127,7 +128,7 @@
                     , { field: 'itemCode', title: 'item code', sort: true }
                     , { field: 'number', title: 'number', sort: true }
                     , { field: 'safeNumber', title: 'safe number', sort: true }
-                    , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 100 }
+                    , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 180 }
                 ]]
                 , page: true
             });
@@ -184,6 +185,15 @@
                         obj.del();
                         layer.close(index);
                     });
+                } else if (obj.event === 'edit') {
+                    localStorage.setItem("itemId", obj.data.itemId);
+                    localStorage.setItem("name", obj.data.name);
+                    localStorage.setItem("desc", obj.data.desc);
+                    localStorage.setItem("updateTime", obj.data.updateTime);
+                    localStorage.setItem("itemCode", obj.data.itemCode);
+                    localStorage.setItem("number", obj.data.number);
+                    localStorage.setItem("safeNumber", obj.data.safeNumber);
+                    xadmin.open('edit storage', 'storage-item-edit.html', 400, 480);
                 }
             });
 

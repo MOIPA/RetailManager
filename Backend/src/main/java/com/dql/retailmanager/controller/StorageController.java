@@ -5,6 +5,7 @@ import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
+import com.dql.retailmanager.entity.form.StorageItemForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import org.apache.ibatis.annotations.Param;
@@ -70,6 +71,11 @@ public class StorageController {
             return "failed";
         }
         return "success";
+    }
+
+    @PostMapping("/updateItemInfo")
+    public int updateIntemInfo(@RequestBody StorageItemForm form) {
+        return storageService.updateIntemInfo(form);
     }
 
     @GetMapping("/getItemFromStorage")

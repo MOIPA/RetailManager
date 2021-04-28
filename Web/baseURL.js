@@ -29,6 +29,7 @@ export default {
     getItemFromStorage: baseUrl + "/storage/getItemFromStorage",
     getItemFromStorageByPage: baseUrl + "/storage/getItemFromStorageByPage",
     deleteItemFromStorage: baseUrl + "/storage/deleteItemFromStorage",
+    updateItemInfo: baseUrl + "/storage/updateItemInfo",
     // account
     accountList: baseUrl + "/account/listAccountByPage",
     addAccount: baseUrl + "/account/addAccount",
@@ -37,7 +38,7 @@ export default {
     activeAccountById: baseUrl + "/account/activeAccountById",
     // purchase order
     purchaseList: baseUrl + "/purchase/listOrderByPage",
-    deleteByTicketCode:baseUrl + "/purchase/deleteByTicketCode",
-    addOrder:baseUrl + "/purchase/addOrder",
+    deleteByTicketCode: baseUrl + "/purchase/deleteByTicketCode",
+    addOrder: baseUrl + "/purchase/addOrder",
 
 }

@@ -70,7 +70,7 @@ public class PurchaseController {
         res = purchaseService.addOrder(purchase);
         if (res <= 0) return 3;
         // update storage
-//        res = storageService.updateItemNumber(purchase.getItemId(), purchase.getStorageId(), purchase.getNumber());
+        res = storageService.updateItemNumber(purchase.getItemId(), purchase.getStorageId(), purchase.getNumber());
 //        if (res <= 0) return -3; // update account failed
         // update account money
         return 1;

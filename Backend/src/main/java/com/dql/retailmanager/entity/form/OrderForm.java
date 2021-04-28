@@ -8,6 +8,7 @@ public class OrderForm {
     private int storageId;
     private String supplier;
     private int number;
+    private int sellOrder;
 
     // default value
 //    private int accountId;

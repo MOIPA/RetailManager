@@ -8,12 +8,14 @@ import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
+import com.dql.retailmanager.entity.form.StorageItemForm;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -95,8 +97,22 @@ public class StorageService implements IStorageService {
 
     @Override
     public int updateItemNumber(Integer itemId, Integer storageId, Integer number) {
-        int currentNumber = this.itemStorageDao.getItemNumber(itemId, storageId);
-        return this.itemStorageDao.updateItemNumber(itemId, storageId, number + currentNumber);
+        ItemStorage itemStorage = this.itemStorageDao.getItem(itemId, storageId);
+        if (itemStorage == null) {
+            ItemStorage itemStorage1 = new ItemStorage();
+            itemStorage1.setItemId(itemId);
+            itemStorage1.setStorageId(storageId);
+            itemStorage1.setNumber(number);
+            itemStorage1.setSafeNumber(0);
+            itemStorage1.setUpdateTime(new Date());
+            return itemStorageDao.insert(itemStorage1);
+        }
+        return this.itemStorageDao.updateItemNumber(itemId, storageId, number + itemStorage.getNumber());
+    }
+
+    @Override
+    public int updateIntemInfo(StorageItemForm form) {
+        return itemStorageDao.updateItemNumberAndSafeNumber(form);
     }
 
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {
