@@ -35,4 +35,9 @@ export default {
     deleteAccountByIds: baseUrl + "/account/deleteAccountByIds",
     updateAccountById: baseUrl + "/account/updateAccountById",
     activeAccountById: baseUrl + "/account/activeAccountById",
+    // purchase order
+    purchaseList: baseUrl + "/purchase/listOrderByPage",
+    deleteByTicketCode:baseUrl + "/purchase/deleteByTicketCode",
+    addOrder:baseUrl + "/purchase/addOrder",
+
 }

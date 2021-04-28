@@ -50,7 +50,9 @@ public class AccountService implements IAccountService {
     public int updateById(Account record) {
         if (record.getActive() == 1) {
             List<Account> activedAccount = dao.getActivedAccount();
-            if (activedAccount != null && activedAccount.size() > 0) return -2;
+            if (activedAccount != null && activedAccount.size() > 0
+                    && !activedAccount.get(0).getId().equals(record.getId()))
+                return -2;
         }
         return dao.updateByPrimaryKey(record);
     }
@@ -68,6 +70,20 @@ public class AccountService implements IAccountService {
         }
         // -2 : exist activited account
         return -2;
+    }
+
+    @Override
+    public List<Account> getActivitedAccount() {
+        return dao.getActivedAccount();
+    }
+
+    @Override
+    public double updateAccountMoneyById(Integer accountId, Integer totalMoney) {
+        Account account = dao.selectByPrimaryKey(accountId);
+        double v = account.getCurrentMoney() - totalMoney;
+        if (v < 0) return v;
+        account.setCurrentMoney(v);
+        return dao.updateByPrimaryKey(account);
     }
 
     public PageInfo<Account> getPageInfo(SearchForm pageRequest) {

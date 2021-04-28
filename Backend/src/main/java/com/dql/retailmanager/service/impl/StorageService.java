@@ -93,6 +93,12 @@ public class StorageService implements IStorageService {
         return 0;
     }
 
+    @Override
+    public int updateItemNumber(Integer itemId, Integer storageId, Integer number) {
+        int currentNumber = this.itemStorageDao.getItemNumber(itemId, storageId);
+        return this.itemStorageDao.updateItemNumber(itemId, storageId, number + currentNumber);
+    }
+
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();

@@ -33,4 +33,6 @@ public interface IStorageService {
     Object getItemFromStorageByPage(SearchForm pageRequest);
 
     int deleteItemFromStorage(int[] itemIds, int storageId);
+
+    int updateItemNumber(Integer itemId, Integer storageId, Integer number);
 }

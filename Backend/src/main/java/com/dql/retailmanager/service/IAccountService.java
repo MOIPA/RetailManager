@@ -4,6 +4,8 @@ import com.dql.retailmanager.entity.Account;
 import com.dql.retailmanager.entity.form.SearchForm;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface IAccountService {
     int deleteById(Integer id);
@@ -21,4 +23,8 @@ public interface IAccountService {
     Object listAccountByPage(SearchForm pageRequest);
 
     int activeAccount(int id);
+
+    List<Account> getActivitedAccount();
+
+    double updateAccountMoneyById(Integer accountId, Integer totalMoney);
 }

@@ -8,15 +8,19 @@
         <result column="item_id" jdbcType="INTEGER" property="itemId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="ticket_date" jdbcType="TIMESTAMP" property="ticketDate"/>
-        <result column="total_money" jdbcType="INTEGER" property="totalMoney"/>
+        <result column="total_money" jdbcType="FLOAT" property="totalMoney"/>
+        <result column="storage_id" jdbcType="INTEGER" property="storageId"/>
+        <result column="account_id" jdbcType="INTEGER" property="accountId"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
     </resultMap>
     <insert id="insert" parameterType="com.dql.retailmanager.entity.Purchase">
         <!--@mbg.generated-->
         insert into purchase (supplier, ticket_code, item_id,
-        user_id, ticket_date, total_money
+        user_id, ticket_date, total_money,storage_id,account_id,`number`
         )
         values (#{supplier,jdbcType=VARCHAR}, #{ticketCode,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER},
-        #{userId,jdbcType=INTEGER}, #{ticketDate,jdbcType=TIMESTAMP}, #{totalMoney,jdbcType=INTEGER}
+        #{userId,jdbcType=INTEGER}, #{ticketDate,jdbcType=TIMESTAMP}, #{totalMoney,jdbcType=FLOAT},
+        #{storageId,jdbcType=INTEGER},#{accountId,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.dql.retailmanager.entity.Purchase">
@@ -63,4 +67,36 @@
             </if>
         </trim>
     </insert>
+    <select id="selectPage" resultType="com.dql.retailmanager.entity.PurchaseOrderVO">
+        select
+        item.id itemId,item.name itemName,item.desc itemDesc,item.price itemPrice,item.item_code itemCode,
+        sto.id storageId,sto.name storageName,sto.desc storageDesc,
+        usr.id userId,usr.name userName,usr.phone userPhone,usr.email userEmail,
+        pur.ticket_code ticketCode,pur.ticket_date ticketDate,pur.total_money totalMoney,
+        account.id accountId,account.bank_name accountName,account.code accountCode
+        from purchase pur
+        inner join storage sto on sto.id = pur.storage_id
+        inner join item on item.id = pur.item_id
+        inner join User usr on usr.id = pur.user_id
+        inner join account on account.id = pur.account_id
+        where 1=1
+        <if test="start != null">
+            and pur.ticket_date &gt;= #{start}
+        </if>
+        <if test="end != null">
+            and pur.ticket_date &lt;= #{end}
+        </if>
+        <if test="storagename != null">
+            and sto.name like concat('%',#{storagename},'%')
+        </if>
+        <if test="itemname != null">
+            and item.name like concat('%',#{itemname},'%')
+        </if>
+        <if test="bankname != null">
+            and account.bank_name like concat('%',#{bankname},'%')
+        </if>
+        <if test="username != null">
+            and usr.name like concat('%',#{username},'%')
+        </if>
+    </select>
 </mapper>
