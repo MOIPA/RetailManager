@@ -25,6 +25,13 @@ public class PurchaseService implements IPurchaseService {
 
     @Override
     public Object listOrderByPage(SearchForm pageRequest) {
+        pageRequest.setSellOrder(0);
+        return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
+    }
+
+    @Override
+    public Object listSellOrderByPage(SearchForm pageRequest) {
+        pageRequest.setSellOrder(1);
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
     }
 

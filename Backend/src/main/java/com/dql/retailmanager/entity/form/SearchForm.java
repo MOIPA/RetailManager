@@ -8,23 +8,28 @@ import java.util.Date;
 @Data
 public class SearchForm extends PageRequest {
     /**
-     * user name
+     * name search
      */
     private String username = "";
 
-    /**
-     * item name
-     */
     private String itemname = "";
 
     private String storagename = "";
 
     private String bankname = "";
 
+    /**
+     * id and status search
+     */
+    private int sellOrder;
+
     private int storageId;
 
     private int itemId;
 
+    /**
+     * date search
+     */
     private Date start = null;
 
     private Date end = null;

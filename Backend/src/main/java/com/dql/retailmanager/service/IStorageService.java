@@ -38,4 +38,6 @@ public interface IStorageService {
     int updateItemNumber(Integer itemId, Integer storageId, Integer number);
 
     int updateIntemInfo(StorageItemForm form);
+
+    int deleteItemNumber(int itemId, int storageId, int number);
 }

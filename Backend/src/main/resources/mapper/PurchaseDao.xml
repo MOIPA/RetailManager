@@ -16,11 +16,11 @@
     <insert id="insert" parameterType="com.dql.retailmanager.entity.Purchase">
         <!--@mbg.generated-->
         insert into purchase (supplier, ticket_code, item_id,
-        user_id, ticket_date, total_money,storage_id,account_id,`number`
+        user_id, ticket_date, total_money,storage_id,account_id,`number`,sell_order
         )
         values (#{supplier,jdbcType=VARCHAR}, #{ticketCode,jdbcType=VARCHAR}, #{itemId,jdbcType=INTEGER},
         #{userId,jdbcType=INTEGER}, #{ticketDate,jdbcType=TIMESTAMP}, #{totalMoney,jdbcType=FLOAT},
-        #{storageId,jdbcType=INTEGER},#{accountId,jdbcType=INTEGER},#{number,jdbcType=INTEGER}
+        #{storageId,jdbcType=INTEGER},#{accountId,jdbcType=INTEGER},#{number,jdbcType=INTEGER},#{sellOrder,jdbcType=INTEGER}
         )
     </insert>
     <insert id="insertSelective" parameterType="com.dql.retailmanager.entity.Purchase">
@@ -72,7 +72,7 @@
         item.id itemId,item.name itemName,item.desc itemDesc,item.price itemPrice,item.item_code itemCode,
         sto.id storageId,sto.name storageName,sto.desc storageDesc,
         usr.id userId,usr.name userName,usr.phone userPhone,usr.email userEmail,
-        pur.ticket_code ticketCode,pur.ticket_date ticketDate,pur.total_money totalMoney,
+        pur.ticket_code ticketCode,pur.ticket_date ticketDate,pur.total_money totalMoney,pur.supplier,
         account.id accountId,account.bank_name accountName,account.code accountCode
         from purchase pur
         inner join storage sto on sto.id = pur.storage_id
@@ -85,6 +85,9 @@
         </if>
         <if test="end != null">
             and pur.ticket_date &lt;= #{end}
+        </if>
+        <if test="sellOrder != null">
+            and pur.sell_order = #{sellOrder}
         </if>
         <if test="storagename != null">
             and sto.name like concat('%',#{storagename},'%')

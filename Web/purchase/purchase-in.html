@@ -106,6 +106,7 @@
                     , { field: 'itemDesc', title: 'itemDesc' }
                     , { field: 'itemPrice', title: 'itemPrice' }
                     , { field: 'itemCode', title: 'itemCode' }
+                    , { field: 'supplier', title: 'supplier' }
                     , { field: 'storageName', title: 'storageName' }
                     , { field: 'userName', title: 'operator name' }
                     , { field: 'ticketCode', title: 'ticketCode' }
@@ -147,7 +148,7 @@
             // delete operation
             var deleteByIds = (ids) => {
                 checkAuth(localStorage.getItem("userId"), "purchase-management", () => {
-                    $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
+                    $.get(urlInfo.deleteByTicketCode, { "code": ids.toString() }, function (data, status) {
                         if (data != null && data != "") {
                             layer.msg('delete success', { icon: 1 });
                             purchaseTable.reload();

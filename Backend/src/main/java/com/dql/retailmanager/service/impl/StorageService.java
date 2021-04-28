@@ -115,6 +115,16 @@ public class StorageService implements IStorageService {
         return itemStorageDao.updateItemNumberAndSafeNumber(form);
     }
 
+    @Override
+    public int deleteItemNumber(int itemId, int storageId, int number) {
+        ItemStorage item = itemStorageDao.getItem(itemId, storageId);
+        if (item.getNumber() < number) {
+            return -item.getNumber();
+        }
+        itemStorageDao.updateItemNumber(itemId, storageId, item.getNumber() - number);
+        return 1;
+    }
+
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();

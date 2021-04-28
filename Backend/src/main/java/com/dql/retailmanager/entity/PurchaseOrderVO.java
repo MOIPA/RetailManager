@@ -22,6 +22,7 @@ public class PurchaseOrderVO {
     private String ticketCode;
     private String ticketDate;
     private String totalMoney;
+    private String supplier;
 
     private int accountId;
     private String accountName;

@@ -65,7 +65,7 @@
                         <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
                             delete</button>
                         <button class="layui-btn"
-                            onclick="xadmin.open('add purchase order','./purchase-add.html',600,400)"><i
+                            onclick="xadmin.open('add purchase order','./sell-add.html',600,400)"><i
                                 class="layui-icon"></i>add</button>
                     </div>
                     <div class="layui-card-body layui-table-body layui-table-main">
@@ -98,7 +98,7 @@
                 }]
                 , method: 'post'
                 , contentType: 'application/json'
-                , url: urlInfo.purchaseList
+                , url: urlInfo.sellingList
                 , cols: [[
                     { type: 'checkbox', fixed: 'left' }
                     , { field: 'ticketCode', width: 80, title: 'ticket code', sort: true }
@@ -106,13 +106,14 @@
                     , { field: 'itemDesc', title: 'itemDesc' }
                     , { field: 'itemPrice', title: 'itemPrice' }
                     , { field: 'itemCode', title: 'itemCode' }
+                    , { field: 'supplier', title: 'customer' }
                     , { field: 'storageName', title: 'storageName' }
                     , { field: 'userName', title: 'operator name' }
                     , { field: 'ticketCode', title: 'ticketCode' }
                     , { field: 'ticketDate', title: 'ticketDate', sort: true }
                     , { field: 'totalMoney', title: 'totalMoney', sort: true }
-                    , { field: 'accountCode', title: 'pay account code' }
-                    , { field: 'accountName', title: 'pay account bank' }
+                    , { field: 'accountCode', title: 'revice account code' }
+                    , { field: 'accountName', title: 'revice account bank' }
                     , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 100 }
                 ]]
                 , page: true
@@ -147,7 +148,7 @@
             // delete operation
             var deleteByIds = (ids) => {
                 checkAuth(localStorage.getItem("userId"), "purchase-management", () => {
-                    $.get(urlInfo.deleteItemByIds, { "ids": ids.toString() }, function (data, status) {
+                    $.get(urlInfo.deleteByTicketCode, { "code": ids.toString() }, function (data, status) {
                         if (data != null && data != "") {
                             layer.msg('delete success', { icon: 1 });
                             purchaseTable.reload();

@@ -11,5 +11,7 @@ public interface IPurchaseService {
 
     Object listOrderByPage(SearchForm pageRequest);
 
+    Object listSellOrderByPage(SearchForm pageRequest);
+
     int addOrder(Purchase orderForm);
 }
