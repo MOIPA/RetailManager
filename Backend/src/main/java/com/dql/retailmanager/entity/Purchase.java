@@ -42,7 +42,7 @@ public class Purchase implements Serializable {
     /**
      * @mbg.generated 2021-04-27 14:58:45
      */
-    private Integer totalMoney;
+    private Double totalMoney;
 
     private Integer number;
 

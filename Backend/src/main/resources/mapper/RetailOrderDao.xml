@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dql.retailmanager.dao.mapper.RetailOrderDao">
+    <resultMap id="BaseResultMap" type="com.dql.retailmanager.entity.RetailOrder">
+        <!--@mbg.generated-->
+        <id column="retail_code" jdbcType="VARCHAR" property="retailCode"/>
+        <result column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="item_id" jdbcType="INTEGER" property="itemId"/>
+        <result column="storage_id" jdbcType="INTEGER" property="storageId"/>
+        <result column="item_number" jdbcType="INTEGER" property="itemNumber"/>
+        <result column="money" jdbcType="FLOAT" property="money"/>
+        <result column="trade_time" jdbcType="TIMESTAMP" property="tradeTime"/>
+        <result column="account_id" jdbcType="INTEGER" property="accountId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        retail_code, member_id, user_id, remark, item_id, storage_id, item_number, money,
+        trade_time,account_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from retail_order
+        where retail_code = #{retailCode,jdbcType=VARCHAR}
+    </select>
+    <select id="selectPage" resultType="com.dql.retailmanager.entity.RetailOrderVO">
+        select
+        retail_order.item_number itemNumber,retail_order.money,retail_order.trade_time
+        tradeTime,retail_order.remark,retail_order.retail_code retailCode,
+        member.memberNumber,
+        usr.name userName,
+        item.name itemName,item.item_code itemCode,item.price,
+        account.code accountCode,account.bank_name bankName,
+        storage.name storageName
+        from retail_order
+        inner join member on member.id = retail_order.member_id
+        inner join `User` usr on usr.id = retail_order.user_id
+        inner join item on item.id = retail_order.item_id
+        inner join storage on storage.id = retail_order.storage_id
+        inner join account on account.id = retail_order.account_id
+        where 1=1
+        <if test="start != null">
+            and retail_order.trade_time &gt; #{start}
+        </if>
+        <if test="end != null">
+            and retail_order.trade_time &lt; #{end}
+        </if>
+        <if test="storagename != null">
+            and storage.name like concat('%',#{storagename},'%')
+        </if>
+        <if test="itemname != null">
+            and item.name like concat('%',#{itemname},'%')
+        </if>
+        <if test="bankname != null">
+            and account.bank_name like concat('%',#{bankname},'%')
+        </if>
+        <if test="username != null">
+            and usr.name like concat('%',#{username},'%')
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
+        delete from retail_order
+        where retail_code = #{retailCode,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" keyColumn="retail_code" keyProperty="retailCode"
+            parameterType="com.dql.retailmanager.entity.RetailOrder" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into retail_order (member_id, user_id, remark,
+        item_id, storage_id, item_number,
+        money, trade_time,account_id)
+        values (#{memberId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+        #{itemId,jdbcType=INTEGER}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=INTEGER},
+        #{money,jdbcType=FLOAT}, #{tradeTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="retail_code" keyProperty="retailCode"
+            parameterType="com.dql.retailmanager.entity.RetailOrder" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into retail_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="storageId != null">
+                storage_id,
+            </if>
+            <if test="itemNumber != null">
+                item_number,
+            </if>
+            <if test="money != null">
+                money,
+            </if>
+            <if test="tradeTime != null">
+                trade_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=INTEGER},
+            </if>
+            <if test="storageId != null">
+                #{storageId,jdbcType=INTEGER},
+            </if>
+            <if test="itemNumber != null">
+                #{itemNumber,jdbcType=INTEGER},
+            </if>
+            <if test="money != null">
+                #{money,jdbcType=FLOAT},
+            </if>
+            <if test="tradeTime != null">
+                #{tradeTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dql.retailmanager.entity.RetailOrder">
+        <!--@mbg.generated-->
+        update retail_order
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=INTEGER},
+            </if>
+            <if test="storageId != null">
+                storage_id = #{storageId,jdbcType=INTEGER},
+            </if>
+            <if test="itemNumber != null">
+                item_number = #{itemNumber,jdbcType=INTEGER},
+            </if>
+            <if test="money != null">
+                money = #{money,jdbcType=FLOAT},
+            </if>
+            <if test="tradeTime != null">
+                trade_time = #{tradeTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where retail_code = #{retailCode,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dql.retailmanager.entity.RetailOrder">
+        <!--@mbg.generated-->
+        update retail_order
+        set member_id = #{memberId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR},
+        item_id = #{itemId,jdbcType=INTEGER},
+        storage_id = #{storageId,jdbcType=INTEGER},
+        item_number = #{itemNumber,jdbcType=INTEGER},
+        money = #{money,jdbcType=FLOAT},
+        trade_time = #{tradeTime,jdbcType=TIMESTAMP}
+        where retail_code = #{retailCode,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.dql.retailmanager.entity.Item">
         <!--@mbg.generated-->
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="price" jdbcType="FLOAT" property="price"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="desc" jdbcType="VARCHAR" property="desc"/>
         <result column="item_code" jdbcType="VARCHAR" property="itemCode"/>
@@ -33,7 +33,7 @@
         values (#{name,jdbcType=VARCHAR},
         #{desc,jdbcType=VARCHAR},
         #{itemCode,jdbcType=VARCHAR},
-        #{price,jdbcType=INTEGER}
+        #{price,jdbcType=FLOAT}
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Item"
@@ -85,7 +85,7 @@
         set `name` = #{name,jdbcType=VARCHAR},
         `desc` = #{desc,jdbcType=VARCHAR},
         item_code = #{itemCode,jdbcType=VARCHAR},
-        price = #{price,jdbcType=INTEGER}
+        price = #{price,jdbcType=FLOAT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

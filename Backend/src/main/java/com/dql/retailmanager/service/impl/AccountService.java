@@ -78,7 +78,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public double updateAccountMoneyById(Integer accountId, Integer totalMoney, int isPlus) {
+    public double updateAccountMoneyById(Integer accountId, Double totalMoney, int isPlus) {
         Account account = dao.selectByPrimaryKey(accountId);
         double v;
         if (isPlus == 1) {

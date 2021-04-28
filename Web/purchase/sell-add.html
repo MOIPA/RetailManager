@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>item management</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="L_name" class="layui-form-label">
+                                <span class="x-red">*</span>choose one storage</label>
+                            <div class="layui-input-inline ">
+                                <select id="storageSelect" name="storageSelect" lay-verify="required">
+                                    <option value="">storage name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_name" class="layui-form-label">
+                                <span class="x-red">*</span>choose one item</label>
+                            <div class="layui-input-inline ">
+                                <select id="itemSelect" name="itemSelect" lay-verify="required">
+                                    <option value="">item name</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_number" class="layui-form-label">
+                                <span class="x-red">*</span>number</label>
+                            <div class="layui-input-inline">
+                                <input type="number" id="L_number" name="number" required="" lay-verify="number"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_supplier" class="layui-form-label">
+                                <span class="x-red">*</span>customer</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="L_supplier" name="supplier" required="" lay-verify="supplier"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <!-- <div class="layui-form-item">
+                            <label for="L_totalMoney" class="layui-form-label">
+                                <span class="x-red">*</span>total money</label>
+                            <div class="layui-input-inline">
+                                <input disabled type="text" id="L_totalMoney" name="totalMoney" required=""
+                                    lay-verify="totalMoney" autocomplete="off" class="layui-input">
+                            </div>
+                        </div> -->
+                        <div class="layui-form-item">
+                            <label for="L_repass" class="layui-form-label"></label>
+                            <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../lib/jquery-3.5.1.js"></script>
+<script type="module">
+    import urlInfo from '../baseURL.js'
+    import { checkAuth } from '../js/checkAuthority.js'
+    layui.use(['form', 'layer', 'jquery'],
+        function () {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                number: function (value) {
+                    if (value.length < 0) {
+                        return 'number can not be negative';
+                    }
+                },
+                supplier: function (value) {
+                    if (value.length < 1) {
+                        return 'customer can not be empty';
+                    }
+                }
+            });
+
+
+            $.ajax({
+                type: "POST",
+                url: urlInfo.storageList,
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({}),
+                dataType: "json",
+                success: function (message) {
+                    message.data.forEach(x => {
+                        $('#storageSelect').append(new Option(x.name, x.id));
+                    });
+                    form.render("select");
+                },
+                error: function (message) {
+                    layer.msg("failed to load storage list");
+                },
+                async: false
+            });
+
+            form.on("select", function (data) {
+                $.ajax({
+                    type: "GET",
+                    url: urlInfo.getItemFromStorage,
+                    contentType: "application/json;charset=utf-8",
+                    data: { storageId:data.value},
+                    dataType: "json",
+                    success: function (message) {
+                        message.forEach(x => {
+                            $('#itemSelect').append(new Option(x.name, x.itemId));
+                        });
+                        form.render("select");
+                    },
+                    error: function (message) {
+                        layer.msg("failed to load item list");
+                    },
+                    async: false
+                });
+            });
+
+            form.on('submit(add)',
+                function (data) {
+                    console.log(data);
+                    checkAuth(localStorage.getItem("userId"), "purchase-management", () => {
+                        $.ajax({
+                            type: "POST",
+                            url: urlInfo.addSellingOrder,
+                            contentType: "application/json;charset=utf-8",
+                            data: JSON.stringify({
+                                "userId": localStorage.getItem("userId"),
+                                "storageId": data.field.storageSelect,
+                                "itemId": data.field.itemSelect,
+                                "supplier": data.field.supplier,
+                                "number": data.field.number,
+                            }),
+                            dataType: "json",
+                            success: function (message) {
+                                if (message == 2) {
+                                    layer.alert("no active account to recive money", {
+                                        icon: 2
+                                    },
+                                        function () {
+                                            xadmin.close();
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                } else if (message < 0) {
+                                    layer.alert("The stock is not enough you only have " + -message + " items", {
+                                        icon: 2
+                                    },
+                                        function () {
+                                            xadmin.close();
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                } else if (message == 3) {
+                                    layer.alert("add selling order failed!", {
+                                        icon: 2
+                                    },
+                                        function () {
+                                            xadmin.close();
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                } else {
+                                    layer.alert("add selling order success", {
+                                        icon: 6
+                                    },
+                                        function () {
+                                            xadmin.close();
+                                            xadmin.father_reload();
+                                        }
+                                    );
+                                }
+
+                            },
+                            error: function (message) {
+                                layer.msg("failed to add order");
+                            }
+                        });
+                    });
+
+                    return false;
+                });
+
+        });
+</script>
+
+
+</html>

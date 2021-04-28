@@ -42,5 +42,9 @@ export default {
     deleteByTicketCode: baseUrl + "/purchase/deleteByTicketCode",
     addOrder: baseUrl + "/purchase/addOrder",
     addSellingOrder: baseUrl + "/purchase/addSellingOrder",
+    // retail order
+    listRetailOrderByPage: baseUrl + "/retail/listRetailOrderByPage",
+    deleteByRetailCode: baseUrl + "/retail/deleteByRetailCode",
+    addOrder: baseUrl + "/retail/addRetailOrder",
 
 }

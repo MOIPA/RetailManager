@@ -26,5 +26,5 @@ public interface IAccountService {
 
     List<Account> getActivitedAccount();
 
-    double updateAccountMoneyById(Integer accountId, Integer totalMoney, int isPlus);
+    double updateAccountMoneyById(Integer accountId, Double totalMoney, int isPlus);
 }
