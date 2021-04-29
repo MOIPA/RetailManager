@@ -286,6 +286,11 @@
                                 }
                                 if (XHR.responseText[0] == 's') {
                                     layer.alert(XHR.responseText, { icon: 6 });
+                                    // reload table
+                                    itemListTable.reload({ url: urlInfo.itemListAndinventory });
+                                    cartList = [];
+                                    shopListTable.reload({ data: cartList });
+                                    $("#L_totalMoney").val(0);
                                 }
                             },
                         });

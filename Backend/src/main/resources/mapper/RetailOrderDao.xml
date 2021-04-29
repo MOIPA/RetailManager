@@ -71,10 +71,11 @@
         <!--@mbg.generated-->
         insert into retail_order (member_id, user_id, remark,
         item_id, storage_id, item_number,
-        money, trade_time,account_id)
+        money, trade_time,account_id,retail_code)
         values (#{memberId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
         #{itemId,jdbcType=VARCHAR}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=INTEGER},
-        #{money,jdbcType=FLOAT}, #{tradeTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=INTEGER})
+        #{money,jdbcType=FLOAT}, #{tradeTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=INTEGER},
+        #{retailCode,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" keyColumn="retail_code" keyProperty="retailCode"
             parameterType="com.dql.retailmanager.entity.RetailOrder" useGeneratedKeys="true">
