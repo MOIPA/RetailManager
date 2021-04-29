@@ -7,7 +7,7 @@
         <result column="member_id" jdbcType="INTEGER" property="memberId"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="item_id" jdbcType="INTEGER" property="itemId"/>
+        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
         <result column="storage_id" jdbcType="INTEGER" property="storageId"/>
         <result column="item_number" jdbcType="INTEGER" property="itemNumber"/>
         <result column="money" jdbcType="FLOAT" property="money"/>
@@ -73,7 +73,7 @@
         item_id, storage_id, item_number,
         money, trade_time,account_id)
         values (#{memberId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
-        #{itemId,jdbcType=INTEGER}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=INTEGER},
+        #{itemId,jdbcType=VARCHAR}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=INTEGER},
         #{money,jdbcType=FLOAT}, #{tradeTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" keyColumn="retail_code" keyProperty="retailCode"
@@ -117,7 +117,7 @@
                 #{remark,jdbcType=VARCHAR},
             </if>
             <if test="itemId != null">
-                #{itemId,jdbcType=INTEGER},
+                #{itemId,jdbcType=VARCHAR},
             </if>
             <if test="storageId != null">
                 #{storageId,jdbcType=INTEGER},
@@ -147,7 +147,7 @@
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="itemId != null">
-                item_id = #{itemId,jdbcType=INTEGER},
+                item_id = #{itemId,jdbcType=VARCHAR},
             </if>
             <if test="storageId != null">
                 storage_id = #{storageId,jdbcType=INTEGER},
@@ -170,7 +170,7 @@
         set member_id = #{memberId,jdbcType=INTEGER},
         user_id = #{userId,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR},
-        item_id = #{itemId,jdbcType=INTEGER},
+        item_id = #{itemId,jdbcType=VARCHAR},
         storage_id = #{storageId,jdbcType=INTEGER},
         item_number = #{itemNumber,jdbcType=INTEGER},
         money = #{money,jdbcType=FLOAT},

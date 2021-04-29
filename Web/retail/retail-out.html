@@ -34,25 +34,19 @@
                                     <label for="L_name" class="layui-form-label">
                                         <span class="x-red">*</span>choose one storage</label>
                                     <div class="layui-input-inline ">
-                                        <select id="storageSelect" name="storageSelect" lay-verify="required">
+                                        <select id="storageSelect" name="storageSelect" lay-filter="storageSelect"
+                                            lay-verify="required">
                                             <option value="">storage name</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
-                                    <label for="L_number" class="layui-form-label">
-                                        <span class="x-red">*</span>number</label>
-                                    <div class="layui-input-inline">
-                                        <input type="number" id="L_number" name="number" required="" lay-verify="number"
-                                            autocomplete="off" class="layui-input">
-                                    </div>
-                                </div>
-                                <div class="layui-form-item">
-                                    <label for="L_supplier" class="layui-form-label">
-                                        <span class="x-red">*</span>supplier</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" id="L_supplier" name="supplier" required=""
-                                            lay-verify="supplier" autocomplete="off" class="layui-input">
+                                    <label for="L_member" class="layui-form-label">
+                                        <span class="x-red">*</span>choose member</label>
+                                    <div class="layui-input-inline ">
+                                        <select id="memberSelect" name="memberSelect" lay-verify="required">
+                                            <option value="">member name</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -108,14 +102,9 @@
 
             //自定义验证规则
             form.verify({
-                number: function (value) {
-                    if (value.length < 0) {
-                        return 'number can not be negative';
-                    }
-                },
-                supplier: function (value) {
-                    if (value.length < 1) {
-                        return 'supplier can not be empty';
+                totalMoney: function (value) {
+                    if (value.length <= 0) {
+                        return 'empty cart';
                     }
                 }
             });
@@ -136,7 +125,29 @@
                 data: []
                 , page: false
             });
-            form.on("select", function (data) {
+
+            // listen cart list table
+            table.on('tool(shopList)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'remove') {
+                    var newCartList = [];
+                    for (let i = 0; i < cartList.length; i++) {
+                        if (cartList[i].id != obj.data.id) {
+                            newCartList.push(cartList[i]);
+                        }
+                    }
+                    cartList = newCartList;
+                    shopListTable.reload({ data: cartList });
+                    var total = 0;
+                    cartList.forEach(x => {
+                        total += x.totalPrice;
+                    });
+                    $("#L_totalMoney").val(total);
+                }
+            });
+
+            form.on("select(storageSelect)", function (data) {
                 // render table
                 itemListTable = table.render({
                     elem: '#itemList'
@@ -145,14 +156,15 @@
                         title: 'tips'
                         , layEvent: 'LAYTABLE_TIPS'
                         , icon: 'layui-icon-tips'
-                    }]
-                    , method: 'post'
-                    , contentType: 'application/json'
-                    , url: urlInfo.itemList
+                    }],
+                    where: { storageId: data.value }
+                    , method: 'get'
+                    , url: urlInfo.itemListAndinventory
                     , cols: [[
                         , { field: 'id', width: 80, title: 'ID', sort: true }
                         , { field: 'number', title: 'number', edit: 'text', width: 100, style: 'background-color: #009688; color: #fff;' }
-                        , { field: 'name', width: 150, title: 'name' }
+                        , { field: 'inventory', title: 'inventory', width: 100, style: 'background-color: #ff5722; color: #fff;' }
+                        , { field: 'name', width: 150, title: 'name', style: "color:#1e9fff;" }
                         , { field: 'desc', title: 'desc' }
                         , { field: 'price', title: 'price', sort: true }
                         , { fixed: 'right', title: 'operation', toolbar: '#itemListBar', width: 150 }
@@ -178,24 +190,58 @@
                         // xadmin.open('edit item', 'item-edit.html', 400, 400);
                         if (parseFloat(obj.data.number).toString() == "NaN") {
                             layer.msg(' must be number !');
+                        } else if (parseFloat(obj.data.number) > parseFloat(obj.data.inventory)) {
+                            layer.msg('not enouth inventory');
                         } else {
+                            // merge repeat
                             for (let i = 0; i < cartList.length; i++) {
                                 if (cartList[i].id == obj.data.id) {
                                     cartList[i].number = obj.data.number;
                                     cartList[i].totalPrice = parseFloat(cartList[i].number) * parseFloat(cartList[i].price);
                                     layer.msg("already added, update number");
                                     shopListTable.reload({ data: cartList });
+                                    // calc total money
+                                    var total = 0;
+                                    cartList.forEach(x => {
+                                        total += x.totalPrice;
+                                    });
+                                    $("#L_totalMoney").val(total);
                                     return false;
                                 }
                             }
                             obj.data.totalPrice = parseFloat(obj.data.number) * parseFloat(obj.data.price);
                             cartList.push(obj.data);
                             shopListTable.reload({ data: cartList });
+                            var total = 0;
+                            cartList.forEach(x => {
+                                total += x.totalPrice;
+                            });
+                            $("#L_totalMoney").val(total);
                         }
                     }
                 });
             });
 
+            // render member select
+            $.ajax({
+                type: "POST",
+                url: urlInfo.memberList,
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({}),
+                dataType: "json",
+                success: function (message) {
+                    message.data.forEach(x => {
+                        $('#memberSelect').append(new Option(x.name, x.id));
+                    });
+                    form.render("select");
+                },
+                error: function (message) {
+                    layer.msg("failed to load member list");
+                },
+                async: true
+            });
+
+            // render storage select
             $.ajax({
                 type: "POST",
                 url: urlInfo.storageList,
@@ -211,15 +257,17 @@
                 error: function (message) {
                     layer.msg("failed to load storage list");
                 },
-                async: false
+                async: true
             });
+
+
 
             //监听提交
             form.on('submit(add)',
                 function (data) {
                     console.log(data);
                     //发异步，把数据提交
-                    checkAuth(localStorage.getItem("userId"), "purchase-management", () => {
+                    checkAuth(localStorage.getItem("userId"), "retail-management", () => {
                         $.ajax({
                             type: "POST",
                             url: urlInfo.addOrder,
@@ -227,66 +275,19 @@
                             data: JSON.stringify({
                                 "userId": localStorage.getItem("userId"),
                                 "storageId": data.field.storageSelect,
-                                "itemId": data.field.itemSelect,
-                                "supplier": data.field.supplier,
-                                "number": data.field.number,
+                                "memberId": data.field.memberSelect,
+                                "money": data.field.totalMoney,
+                                "itemList": cartList
                             }),
                             dataType: "json",
-                            success: function (message) {
-                                if (message == 2) {
-                                    layer.alert("no active account to pay", {
-                                        icon: 2
-                                    },
-                                        function () {
-                                            //关闭当前frame
-                                            xadmin.close();
-
-                                            // 可以对父窗口进行刷新 
-                                            xadmin.father_reload();
-                                        }
-                                    );
-                                } else if (message < 0) {
-                                    layer.alert("active account doesn't have enough money!\n you need at least " + -message + " $", {
-                                        icon: 2
-                                    },
-                                        function () {
-                                            //关闭当前frame
-                                            xadmin.close();
-
-                                            // 可以对父窗口进行刷新 
-                                            xadmin.father_reload();
-                                        }
-                                    );
-                                } else if (message == 3) {
-                                    layer.alert("add order failed!", {
-                                        icon: 2
-                                    },
-                                        function () {
-                                            //关闭当前frame
-                                            xadmin.close();
-
-                                            // 可以对父窗口进行刷新 
-                                            xadmin.father_reload();
-                                        }
-                                    );
-                                } else {
-                                    layer.alert("add item success", {
-                                        icon: 6
-                                    },
-                                        function () {
-                                            //关闭当前frame
-                                            xadmin.close();
-
-                                            // 可以对父窗口进行刷新 
-                                            xadmin.father_reload();
-                                        }
-                                    );
+                            complete(XHR, TS) {
+                                if (XHR.responseText[0] == 'f') {
+                                    layer.alert(XHR.responseText, { icon: 2 });
                                 }
-
+                                if (XHR.responseText[0] == 's') {
+                                    layer.alert(XHR.responseText, { icon: 6 });
+                                }
                             },
-                            error: function (message) {
-                                layer.msg("failed to add order");
-                            }
                         });
                     });
 

@@ -54,4 +54,16 @@
             </if>
         </trim>
     </insert>
+    <select id="itemListAndinventory" resultType="com.dql.retailmanager.entity.ItemAndInventoryVO">
+        select ist.number      inventory,
+               ist.safe_number safeNumber,
+               item.id,
+               item.name,
+               item.desc,
+               item.item_code,
+               item.price
+        from item_storage ist
+                 inner join item on item.id = item_id
+        where ist.storage_id = #{storageId}
+    </select>
 </mapper>

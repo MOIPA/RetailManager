@@ -5,6 +5,7 @@ import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.StorageItemForm;
+import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +41,6 @@ public interface IStorageService {
     int updateIntemInfo(StorageItemForm form);
 
     int deleteItemNumber(int itemId, int storageId, int number);
+
+    List<ItemAndInventoryVO> itemListAndinventory(int pageRequest);
 }

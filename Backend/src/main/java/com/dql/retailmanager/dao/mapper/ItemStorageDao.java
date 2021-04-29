@@ -2,9 +2,12 @@ package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.form.StorageItemForm;
+import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 /**
  * @Entity com.dql.retailmanager.entity.ItemStorage
@@ -34,4 +37,6 @@ public interface ItemStorageDao {
 
     @Update("update item_storage set number=#{number},safe_number=#{safeNumber} where item_id=#{itemId} and storage_id=#{storageId}")
     int updateItemNumberAndSafeNumber(StorageItemForm form);
+
+    List<ItemAndInventoryVO> itemListAndinventory(int storageId);
 }

@@ -9,6 +9,7 @@ import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.StorageItemForm;
+import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -123,6 +124,11 @@ public class StorageService implements IStorageService {
         }
         itemStorageDao.updateItemNumber(itemId, storageId, item.getNumber() - number);
         return 1;
+    }
+
+    @Override
+    public List<ItemAndInventoryVO> itemListAndinventory(int pageRequest) {
+        return itemStorageDao.itemListAndinventory(pageRequest);
     }
 
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {

@@ -1,17 +1,17 @@
 package com.dql.retailmanager.entity.form;
 
+import com.dql.retailmanager.entity.Item;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class RetailOrderForm {
-    private int itemId;
+    private List<Item> itemList;
     private int storageId;
     private int memberId;
     private String remark;
-    private int itemNumber;
     private double money;
-
     private int userId;
-
     private String retailCode;
 }

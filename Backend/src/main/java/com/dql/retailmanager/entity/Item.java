@@ -41,5 +41,8 @@ public class Item implements Serializable {
      *
      * @mbg.generated 2021-04-25 15:19:09
      */
+
+    private String number;
+
     private static final long serialVersionUID = 1L;
 }

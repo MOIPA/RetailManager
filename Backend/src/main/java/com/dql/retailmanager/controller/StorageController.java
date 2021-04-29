@@ -1,20 +1,19 @@
 package com.dql.retailmanager.controller;
 
-import com.dql.retailmanager.entity.Item;
 import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.ItemStorage;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.StorageItemForm;
-import com.dql.retailmanager.entity.page.PageRequest;
+import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import com.dql.retailmanager.service.IStorageService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/storage")
@@ -92,5 +91,14 @@ public class StorageController {
     public int deleteItemFromStorage(@RequestParam int[] itemIds, @RequestParam int storageId) {
         storageService.deleteItemFromStorage(itemIds, storageId);
         return 1;
+    }
+
+
+    @GetMapping("/itemListAndinventory")
+    public Object itemListAndinventory(@RequestParam String storageId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", "0");
+        map.put("data", storageService.itemListAndinventory(Integer.parseInt(storageId)));
+        return map;
     }
 }
