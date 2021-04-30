@@ -60,4 +60,6 @@ public interface RetailOrderDao {
     Integer getMoneyToday();
 
     List<Map> getMemberStatus();
+
+    List<Integer> getRetailStatus(Integer x);
 }

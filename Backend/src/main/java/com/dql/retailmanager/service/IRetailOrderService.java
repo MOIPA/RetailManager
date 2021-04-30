@@ -35,4 +35,6 @@ public interface IRetailOrderService {
     Integer getMoneyToday();
 
     List<Map> getMembserStatus();
+
+    List<Integer> retailStatus(Integer x);
 }

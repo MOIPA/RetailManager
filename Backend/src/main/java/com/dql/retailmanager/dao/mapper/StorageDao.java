@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Entity com.dql.retailmanager.entity.Storage
@@ -56,4 +57,7 @@ public interface StorageDao {
     void deleteAllItemByStorageId(Integer storageId);
 
     List<ItemAndStorageInfo> selectItemByPage(SearchForm pageRequest);
+
+    @Select("select id,name from storage")
+    List<Map> getAllStorage();
 }

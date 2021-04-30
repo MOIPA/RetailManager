@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StorageService implements IStorageService {
@@ -135,6 +136,11 @@ public class StorageService implements IStorageService {
     @Override
     public Integer getStorageItemNumbers() {
         return itemStorageDao.getTotalItemNumbers();
+    }
+
+    @Override
+    public List<Map> getAllStorage() {
+        return storageDao.getAllStorage();
     }
 
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {

@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/statistics")
@@ -52,5 +55,27 @@ public class StatisticsController {
             else return (long) addNumbers;
         }).toArray();
         return numbers;
+    }
+
+    @GetMapping("/retailStatus")
+    public List<Map> retailStatus() {
+        List<Map> result = new LinkedList<>();
+        Map res = new HashMap();
+        List<Map> storageIds = storageService.getAllStorage();
+        for (int i = 0; i < storageIds.size(); i++) {
+            Map x = storageIds.get(i);
+            List<Integer> membserStatus = retailOrderService.retailStatus((Integer) x.get("id"));
+            res.put("name", x.get("name"));
+            res.put("data", membserStatus.stream().map(y -> y == null ? 0 : y).collect(Collectors.toList()));
+            res.put("type", "line");
+            res.put("smooth", true);
+            Map tmp = new HashMap();
+            Map tmpx = new HashMap();
+            tmp.put("normal", tmpx);
+            res.put("areaStyle", tmp);
+            result.add(res);
+            res = new HashMap();
+        }
+        return result;
     }
 }

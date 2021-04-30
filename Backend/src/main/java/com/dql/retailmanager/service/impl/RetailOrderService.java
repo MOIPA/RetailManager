@@ -91,6 +91,11 @@ public class RetailOrderService implements IRetailOrderService {
         return dao.getMemberStatus();
     }
 
+    @Override
+    public List<Integer> retailStatus(Integer x) {
+        return dao.getRetailStatus(x);
+    }
+
     public PageInfo<RetailOrderVO> getPageInfo(SearchForm pageRequest) {
         int pageNum = pageRequest.getPage();
         int pageSize = pageRequest.getLimit();

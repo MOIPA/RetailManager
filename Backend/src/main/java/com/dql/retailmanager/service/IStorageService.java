@@ -9,6 +9,7 @@ import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public interface IStorageService {
@@ -45,4 +46,6 @@ public interface IStorageService {
     List<ItemAndInventoryVO> itemListAndinventory(int pageRequest);
 
     Integer getStorageItemNumbers();
+
+    List<Map> getAllStorage();
 }
