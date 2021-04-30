@@ -1,6 +1,7 @@
 package com.dql.retailmanager.service;
 
 import com.dql.retailmanager.dao.mapper.UserDao;
+import com.dql.retailmanager.entity.RoleVO;
 import com.dql.retailmanager.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -47,4 +48,11 @@ public interface IUserService {
     List<String> getUserAuthorityById(int userId);
 
     int checkAuthority(int userId, String auth);
+
+    List<User> getAllUsers();
+
+    List<RoleVO> roleList();
+
+
+    int updateUserAuthority(int auth, int userId);
 }

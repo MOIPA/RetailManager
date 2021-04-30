@@ -1,12 +1,15 @@
 package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.dao.mapper.SessionDao;
+import com.dql.retailmanager.entity.RoleVO;
 import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.service.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -39,14 +42,40 @@ public class UserController {
         return userService.checkAuthority(userId, auth);
     }
 
+    @GetMapping("/roleList")
+    public List<RoleVO> roleList() {
+        return userService.roleList();
+    }
+
     @GetMapping("/getUserById")
     public User getUserById(@RequestParam int id) {
         return userService.findUserById(id);
     }
 
+    @GetMapping("/getAllUsers")
+    public Object getAllUsers() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 0);
+        map.put("data", userService.getAllUsers());
+        return map;
+    }
+
+    @GetMapping("/updateUserAuthority")
+    public int updateUserAuthority(@RequestParam int auth, @RequestParam int userId) {
+        return userService.updateUserAuthority(auth, userId);
+    }
+
     @GetMapping("/getUserByName")
     public User getUserByName(@RequestParam String name) {
         return userService.findUserByName(name);
+    }
+
+    @GetMapping("/deleteUserByIds")
+    public int deleteUserByIds(@RequestParam int[] ids) {
+        for (int id : ids) {
+            userService.deleteUserById(id);
+        }
+        return ids.length;
     }
 
     @GetMapping("/deleteUserById")

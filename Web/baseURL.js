@@ -5,6 +5,11 @@ export default {
     userGetById: baseUrl + "/user/getUserById",
     userGetByName: baseUrl + "/user/getUserByName",
     login: baseUrl + "/user/login",
+    getAllUsers: baseUrl + "/user/getAllUsers",
+    deleteUserByIds: baseUrl + "/user/deleteUserByIds",
+    updateUserAuthority: baseUrl + "/user/updateUserAuthority",
+    //role
+    roleList: baseUrl + "/user/roleList",
     // session 
     sessionCheck: baseUrl + "/session/check",
     // auth check

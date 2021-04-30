@@ -1,6 +1,7 @@
 package com.dql.retailmanager.service.impl;
 
 import com.dql.retailmanager.dao.mapper.UserDao;
+import com.dql.retailmanager.entity.RoleVO;
 import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -73,5 +74,20 @@ public class UserService implements IUserService {
         if (userAuthorityById.stream().filter(x -> x.equals(auth)).count() > 0)
             return 1;
         return -1;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
+
+    @Override
+    public List<RoleVO> roleList() {
+        return userDao.roleList();
+    }
+
+    @Override
+    public int updateUserAuthority(int auth, int userId) {
+        return userDao.updateUserAuthority(auth, userId);
     }
 }

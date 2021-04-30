@@ -107,7 +107,7 @@
                 <li>
                     <a href="javascript:;">
                         <i class="iconfont left-nav-li" lay-tips="member management">&#xe726;</i>
-                        <cite>member management</cite>
+                        <cite>staff management</cite>
                         <i class="iconfont nav_right">&#xe6a7;</i></a>
                     <ul class="sub-menu">
                         <li>
@@ -119,6 +119,11 @@
                             <a onclick="xadmin.add_tab('member password','member/member-password.html')">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>member password</cite></a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('user management','member/user-management.html')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>user management</cite></a>
                         </li>
                     </ul>
                 </li>
@@ -223,7 +228,7 @@
                     }, 1500);
                 } else {
                     $('#user').text(localStorage.getItem("userName"));
-                    console.log("logined user"+localStorage.getItem("userName"));
+                    console.log("logined user" + localStorage.getItem("userName"));
                 }
             });
         });

@@ -46,11 +46,11 @@ public class User implements Serializable {
     private String phone;
 
     /**
-     * 
-     *
      * @mbg.generated 2021-04-22 11:16:12
      */
     private String email;
+
+    private String roleName;
 
     private int roleId;
     /**

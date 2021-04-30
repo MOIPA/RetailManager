@@ -37,7 +37,7 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into User (`name`, userTypeId, address,
-        phone, email,pwd,rold_id)
+        phone, email,pwd,role_id)
         values (#{name,jdbcType=VARCHAR}, #{usertypeid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
         #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},#{roleId,jdbcType=VARCHAR})
     </insert>
