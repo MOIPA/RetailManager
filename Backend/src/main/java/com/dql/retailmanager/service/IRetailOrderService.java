@@ -5,6 +5,9 @@ import com.dql.retailmanager.entity.RetailOrder;
 import com.dql.retailmanager.entity.form.SearchForm;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public interface IRetailOrderService {
     int deleteById(String code);
@@ -30,4 +33,6 @@ public interface IRetailOrderService {
     Integer getTotalMemberNumbers();
 
     Integer getMoneyToday();
+
+    List<Map> getMembserStatus();
 }

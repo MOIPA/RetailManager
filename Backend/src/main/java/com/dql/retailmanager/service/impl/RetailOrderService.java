@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author dql
@@ -83,6 +84,11 @@ public class RetailOrderService implements IRetailOrderService {
     @Override
     public Integer getMoneyToday() {
         return dao.getMoneyToday();
+    }
+
+    @Override
+    public List<Map> getMembserStatus() {
+        return dao.getMemberStatus();
     }
 
     public PageInfo<RetailOrderVO> getPageInfo(SearchForm pageRequest) {

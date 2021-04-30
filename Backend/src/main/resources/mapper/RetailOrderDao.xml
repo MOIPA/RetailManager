@@ -65,6 +65,47 @@
             and usr.name like concat('%',#{username},'%')
         </if>
     </select>
+    <select id="getMemberStatus" resultType="java.util.Map">
+        SELECT t1.timeDay as 'day',t2.`addNumbers`
+        FROM (
+                 SELECT date_format(lastWeek.`timeDay`, '%Y-%m-%d') as 'timeDay'
+                 FROM (
+                          select DATE_SUB(NOW(), interval 13 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 12 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 11 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 10 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 9 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 8 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 7 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 6 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 5 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 4 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 3 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 2 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 1 day) as 'timeDay'
+                      ) as lastWeek
+                 WHERE YEARWEEK(lastWeek.`timeDay`, 1) = YEARWEEK(NOW(), 1) - 1
+             ) as t1
+                 LEFT JOIN (
+            SELECT DATE_FORMAT(create_time, '%Y-%m-%d') 'addTime',COUNT(*) as 'addNumbers'
+            FROM member
+            WHERE YEARWEEK(create_time, 1) = YEARWEEK(NOW(), 1) - 1
+            GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+        ) as t2 ON t1.timeDay = t2.`addTime`
+        ORDER BY t1.timeDay
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         <!--@mbg.generated-->
         delete from retail_order

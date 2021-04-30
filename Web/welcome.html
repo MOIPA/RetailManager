@@ -182,34 +182,47 @@
         async: false
     });
 
-    var myChart = echarts.init(document.getElementById('main1'));
-    var option = {
-        grid: {
-            top: '5%',
-            right: '1%',
-            left: '1%',
-            bottom: '10%',
-            containLabel: true
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            name: 'members',
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
-            smooth: true
-        }]
-    };
+    $.ajax({
+        type: "GET",
+        url: urlInfo.memberStatus,
+        dataType: "json",
+        success: function (message) {
+            var myChart = echarts.init(document.getElementById('main1'));
+            var option = {
+                grid: {
+                    top: '5%',
+                    right: '1%',
+                    left: '1%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    name: 'members',
+                    data: message,
+                    type: 'line',
+                    smooth: true
+                }]
+            };
 
-    myChart.setOption(option);
+            myChart.setOption(option);
+        },
+        error: function (message) {
+
+        },
+        async: false
+    });
+
+
 
 
     var myChart = echarts.init(document.getElementById('main2'));

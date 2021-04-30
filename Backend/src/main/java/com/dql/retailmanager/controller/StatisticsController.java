@@ -4,12 +4,13 @@ import com.dql.retailmanager.service.IMemberService;
 import com.dql.retailmanager.service.IRetailOrderService;
 import com.dql.retailmanager.service.IStorageService;
 import com.dql.retailmanager.service.impl.ItemService;
-import com.dql.retailmanager.service.impl.RetailOrderService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/statistics")
@@ -40,5 +41,16 @@ public class StatisticsController {
         // money earned today
         res[5] = retailOrderService.getMoneyToday();
         return res;
+    }
+
+    @GetMapping("/memberStatus")
+    public long[] memberStatus() {
+        List<Map> membserStatus = retailOrderService.getMembserStatus();
+        long[] numbers = membserStatus.stream().mapToLong(x -> {
+            Object addNumbers = x.get("addNumbers");
+            if (addNumbers == null) return 0;
+            else return (long) addNumbers;
+        }).toArray();
+        return numbers;
     }
 }

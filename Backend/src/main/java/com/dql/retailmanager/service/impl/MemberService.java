@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class MemberService implements IMemberService {
      */
     @Override
     public int createMember(Member member) {
+        member.setCreateTime(new Date());
         return memberDao.insert(member);
     }
 

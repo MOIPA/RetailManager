@@ -34,11 +34,12 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into member (`name`, sex, address,
-        phone, `status`, memberNumber, `birthDate` ,email,pwd
+        phone, `status`, memberNumber, `birthDate` ,email,pwd,create_time
         )
         values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
         #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{membernumber,jdbcType=VARCHAR}
-        , #{birthdate,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}
+        , #{birthdate,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Member"

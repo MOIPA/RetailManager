@@ -6,6 +6,7 @@ import com.dql.retailmanager.entity.form.SearchForm;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Entity com.dql.retailmanager.entity.RetailOrder
@@ -57,4 +58,6 @@ public interface RetailOrderDao {
 
     @Select("select sum(money) from retail_order where DATEDIFF(trade_time,NOW())=0")
     Integer getMoneyToday();
+
+    List<Map> getMemberStatus();
 }
