@@ -67,7 +67,10 @@ public class RetailController {
         retailOrder.setMoney(orderForm.getMoney());
         retailOrder.setTradeTime(new Date());
         retailOrder.setItemId(StringUtils.join(orderForm.getItemList().stream().map(x -> String.valueOf(x.getId())).collect(Collectors.toList()), ','));
-        retailOrder.setItemNumber(orderForm.getItemList().stream().mapToInt(x -> Integer.parseInt(x.getNumber())).sum());
+        retailOrder.setItemNumber(StringUtils.join(orderForm.getItemList().stream().map(x -> String.valueOf(x.getNumber())).collect(Collectors.toList()), ','));
+        retailOrder.setItemNames(StringUtils.join(orderForm.getItemList().stream().map(x -> String.valueOf(x.getName())).collect(Collectors.toList()), ','));
+        retailOrder.setItemMoney(StringUtils.join(orderForm.getItemList().stream().map(x -> String.valueOf(x.getPrice())).collect(Collectors.toList()), ','));
+
         retailOrder.setStorageId(orderForm.getStorageId());
         retailOrder.setUserId(orderForm.getUserId());
         retailOrder.setRemark(orderForm.getRemark());

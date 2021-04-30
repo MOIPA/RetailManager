@@ -46,6 +46,6 @@ export default {
     // retail order
     listRetailOrderByPage: baseUrl + "/retail/listRetailOrderByPage",
     deleteByRetailCode: baseUrl + "/retail/deleteByRetailCode",
-    addOrder: baseUrl + "/retail/addRetailOrder",
+    addRetailOrder: baseUrl + "/retail/addRetailOrder",
 
 }

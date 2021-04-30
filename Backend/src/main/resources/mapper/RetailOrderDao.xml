@@ -9,7 +9,9 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
         <result column="storage_id" jdbcType="INTEGER" property="storageId"/>
-        <result column="item_number" jdbcType="INTEGER" property="itemNumber"/>
+        <result column="item_number" jdbcType="VARCHAR" property="itemNumber"/>
+        <result column="item_money" jdbcType="VARCHAR" property="itemMoney"/>
+        <result column="item_names" jdbcType="VARCHAR" property="itemNames"/>
         <result column="money" jdbcType="FLOAT" property="money"/>
         <result column="trade_time" jdbcType="TIMESTAMP" property="tradeTime"/>
         <result column="account_id" jdbcType="INTEGER" property="accountId"/>
@@ -17,7 +19,7 @@
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
         retail_code, member_id, user_id, remark, item_id, storage_id, item_number, money,
-        trade_time,account_id
+        trade_time,account_id,item_money,item_names
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         <!--@mbg.generated-->
@@ -29,16 +31,18 @@
     <select id="selectPage" resultType="com.dql.retailmanager.entity.RetailOrderVO">
         select
         retail_order.item_number itemNumber,retail_order.money,retail_order.trade_time
-        tradeTime,retail_order.remark,retail_order.retail_code retailCode,
+        tradeTime,retail_order.remark,
+        retail_order.retail_code retailCode,
+        retail_order.item_money itemMoney,
+        retail_order.item_names itemNames,
+        retail_order.item_id itemId,
         member.memberNumber,
         usr.name userName,
-        item.name itemName,item.item_code itemCode,item.price,
         account.code accountCode,account.bank_name bankName,
         storage.name storageName
         from retail_order
         inner join member on member.id = retail_order.member_id
         inner join `User` usr on usr.id = retail_order.user_id
-        inner join item on item.id = retail_order.item_id
         inner join storage on storage.id = retail_order.storage_id
         inner join account on account.id = retail_order.account_id
         where 1=1
@@ -52,7 +56,7 @@
             and storage.name like concat('%',#{storagename},'%')
         </if>
         <if test="itemname != null">
-            and item.name like concat('%',#{itemname},'%')
+            and retail_order.item_names like concat('%',#{itemname},'%')
         </if>
         <if test="bankname != null">
             and account.bank_name like concat('%',#{bankname},'%')
@@ -71,11 +75,11 @@
         <!--@mbg.generated-->
         insert into retail_order (member_id, user_id, remark,
         item_id, storage_id, item_number,
-        money, trade_time,account_id,retail_code)
+        money, trade_time,account_id,retail_code,item_money,item_names)
         values (#{memberId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
-        #{itemId,jdbcType=VARCHAR}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=INTEGER},
+        #{itemId,jdbcType=VARCHAR}, #{storageId,jdbcType=INTEGER}, #{itemNumber,jdbcType=VARCHAR},
         #{money,jdbcType=FLOAT}, #{tradeTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=INTEGER},
-        #{retailCode,jdbcType=VARCHAR})
+        #{retailCode,jdbcType=VARCHAR},#{itemMoney,jdbcType=VARCHAR},#{itemNames,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" keyColumn="retail_code" keyProperty="retailCode"
             parameterType="com.dql.retailmanager.entity.RetailOrder" useGeneratedKeys="true">
@@ -124,7 +128,7 @@
                 #{storageId,jdbcType=INTEGER},
             </if>
             <if test="itemNumber != null">
-                #{itemNumber,jdbcType=INTEGER},
+                #{itemNumber,jdbcType=VARCHAR},
             </if>
             <if test="money != null">
                 #{money,jdbcType=FLOAT},
@@ -154,7 +158,7 @@
                 storage_id = #{storageId,jdbcType=INTEGER},
             </if>
             <if test="itemNumber != null">
-                item_number = #{itemNumber,jdbcType=INTEGER},
+                item_number = #{itemNumber,jdbcType=VARCHAR},
             </if>
             <if test="money != null">
                 money = #{money,jdbcType=FLOAT},
@@ -173,7 +177,7 @@
         remark = #{remark,jdbcType=VARCHAR},
         item_id = #{itemId,jdbcType=VARCHAR},
         storage_id = #{storageId,jdbcType=INTEGER},
-        item_number = #{itemNumber,jdbcType=INTEGER},
+        item_number = #{itemNumber,jdbcType=VARCHAR},
         money = #{money,jdbcType=FLOAT},
         trade_time = #{tradeTime,jdbcType=TIMESTAMP}
         where retail_code = #{retailCode,jdbcType=VARCHAR}

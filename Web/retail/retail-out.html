@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="L_repass" class="layui-form-label"></label>
-                                    <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
+                                    <button class="layui-btn layui-btn-lg layui-btn-normal" lay-filter="add" lay-submit="">add</button>
                                 </div>
                             </form>
                         </div>
@@ -270,7 +270,7 @@
                     checkAuth(localStorage.getItem("userId"), "retail-management", () => {
                         $.ajax({
                             type: "POST",
-                            url: urlInfo.addOrder,
+                            url: urlInfo.addRetailOrder,
                             contentType: "application/json;charset=utf-8",
                             data: JSON.stringify({
                                 "userId": localStorage.getItem("userId"),

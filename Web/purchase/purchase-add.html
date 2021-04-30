@@ -140,6 +140,7 @@
             //监听提交
             form.on('submit(add)',
                 function (data) {
+                    debugger;
                     console.log(data);
                     //发异步，把数据提交
                     checkAuth(localStorage.getItem("userId"), "purchase-management", () => {

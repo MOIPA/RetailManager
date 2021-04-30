@@ -29,7 +29,7 @@ public class RetailOrderVO {
     /**
      * @mbg.generated 2021-04-28 15:07:31
      */
-    private Integer itemId;
+    private String itemId;
 
     /**
      * @mbg.generated 2021-04-28 15:07:31
@@ -39,7 +39,7 @@ public class RetailOrderVO {
     /**
      * @mbg.generated 2021-04-28 15:07:31
      */
-    private Integer itemNumber;
+    private String itemNumber;
 
     /**
      * @mbg.generated 2021-04-28 15:07:31
@@ -66,5 +66,9 @@ public class RetailOrderVO {
     private String accountCode;
 
     private String bankName;
+
+    private String itemMoney;
+
+    private String itemNames;
 
 }

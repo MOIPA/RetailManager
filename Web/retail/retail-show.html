@@ -50,7 +50,7 @@
                             <div class="layui-inline layui-show-xs-block">
                                 <input type="text" name="storagename" placeholder="please enter storage name"
                                     autocomplete="off" class="layui-input">
-                            </div>  
+                            </div>
                             <div class="layui-inline layui-show-xs-block">
                                 <input type="text" name="bankname" placeholder="please enter bank name"
                                     autocomplete="off" class="layui-input">
@@ -78,6 +78,7 @@
 
     <script type="text/html" id="bar">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="show">show item detail</a>
   </script>
 
     <script type="module">
@@ -102,16 +103,13 @@
                 , cols: [[
                     { type: 'checkbox', fixed: 'left' }
                     , { field: 'retailCode', width: 80, title: 'retail code', sort: true }
-                    , { field: 'itemName', title: 'itemName' }
-                    , { field: 'money', title: 'money' }
-                    , { field: 'price', title: 'itemPrice' }
                     , { field: 'tradeTime', title: 'tradeTime' }
                     , { field: 'memberNumber', title: 'memberNumber' }
                     , { field: 'itemCode', title: 'itemCode' }
                     , { field: 'storageName', title: 'storageName', sort: true }
                     , { field: 'accountCode', title: 'revice account code', sort: true }
                     , { field: 'bankName', title: 'revice account bank' }
-                    , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 100 }
+                    , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 250 }
                 ]]
                 , page: true
             });
@@ -167,6 +165,9 @@
                         obj.del();
                         layer.close(index);
                     });
+                } else if (obj.event === 'show') {
+                    xadmin.open('item detail info', 'item-detail.html', 600, 600);
+                    localStorage.setItem("itemDetail", JSON.stringify(obj.data));
                 }
             });
 
