@@ -52,5 +52,11 @@ export default {
     listRetailOrderByPage: baseUrl + "/retail/listRetailOrderByPage",
     deleteByRetailCode: baseUrl + "/retail/deleteByRetailCode",
     addRetailOrder: baseUrl + "/retail/addRetailOrder",
+    // data statistics
+    memberStatus: baseUrl + "/statistics/memberStatus",
+    retailStatus: baseUrl + "/statistics/retailStatus",
+    accountStatus: baseUrl + "/statistics/accountStatus",
+    purchaseStatus: baseUrl + "/statistics/purchaseStatus",
+    totalNumberStatus: baseUrl + "/statistics/totalNumberStatus",
 
 }

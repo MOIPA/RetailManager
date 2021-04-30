@@ -20,4 +20,14 @@ public interface IRetailOrderService {
     int updateById(RetailOrder record);
 
     Object listRetailOrderByPage(SearchForm pageRequest);
+
+    Integer getTotalOrderNumbers();
+
+    Integer getTotalTurnOver();
+
+    Integer getHeighestTurnOver();
+
+    Integer getTotalMemberNumbers();
+
+    Integer getMoneyToday();
 }

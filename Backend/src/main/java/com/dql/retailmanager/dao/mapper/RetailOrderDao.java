@@ -3,6 +3,7 @@ package com.dql.retailmanager.dao.mapper;
 import com.dql.retailmanager.entity.RetailOrder;
 import com.dql.retailmanager.entity.RetailOrderVO;
 import com.dql.retailmanager.entity.form.SearchForm;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -41,4 +42,19 @@ public interface RetailOrderDao {
     int updateByPrimaryKey(RetailOrder record);
 
     List<RetailOrderVO> selectPage(SearchForm pageRequest);
+
+    @Select("select count(*) from retail_order")
+    Integer getTotalOrderNumbers();
+
+    @Select("select sum(money) from retail_order")
+    Integer getTotalTurnOver();
+
+    @Select("select max(money) from retail_order")
+    Integer getHeighestTurnOver();
+
+    @Select("select count(*) from member")
+    Integer getTotalMemberNumbers();
+
+    @Select("select sum(money) from retail_order where DATEDIFF(trade_time,NOW())=0")
+    Integer getMoneyToday();
 }

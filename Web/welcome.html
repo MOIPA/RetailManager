@@ -158,11 +158,31 @@
 
 <script src="./lib/echarts.min.js"></script>
 <script src="./lib/jquery-3.5.1.js"></script>
-<script type="text/javascript">
-
+<script type="module">
+    import urlInfo from '../baseURL.js'
     $("#loggedUser").text(localStorage.getItem("userName"));
-    var myChart = echarts.init(document.getElementById('main1'));
 
+    var totalNumberStatus;
+    // prepare data
+    $.ajax({
+        type: "GET",
+        url: urlInfo.totalNumberStatus,
+        dataType: "json",
+        success: function (message) {
+            $("#itemNumbers").text(message[0]);
+            $("#orderNumbers").text(message[1]);
+            $("#totalTurnvoer").text(message[2]);
+            $("#heighestTurnover").text(message[3]);
+            $("#memberNumbers").text(message[4]);
+            $("#moneyEarnedToday").text(message[5]);
+        },
+        error: function (message) {
+
+        },
+        async: false
+    });
+
+    var myChart = echarts.init(document.getElementById('main1'));
     var option = {
         grid: {
             top: '5%',

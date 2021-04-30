@@ -10,6 +10,7 @@ import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.StorageItemForm;
 import com.dql.retailmanager.entity.ItemAndInventoryVO;
+import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -129,6 +130,11 @@ public class StorageService implements IStorageService {
     @Override
     public List<ItemAndInventoryVO> itemListAndinventory(int pageRequest) {
         return itemStorageDao.itemListAndinventory(pageRequest);
+    }
+
+    @Override
+    public Integer getStorageItemNumbers() {
+        return itemStorageDao.getTotalItemNumbers();
     }
 
     public PageInfo<Storage> getPageInfo(SearchForm pageRequest) {

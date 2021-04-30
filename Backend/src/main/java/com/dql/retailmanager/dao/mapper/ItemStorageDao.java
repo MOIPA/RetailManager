@@ -39,4 +39,7 @@ public interface ItemStorageDao {
     int updateItemNumberAndSafeNumber(StorageItemForm form);
 
     List<ItemAndInventoryVO> itemListAndinventory(int storageId);
+
+    @Select("select sum(number) from item_storage")
+    Integer getTotalItemNumbers();
 }

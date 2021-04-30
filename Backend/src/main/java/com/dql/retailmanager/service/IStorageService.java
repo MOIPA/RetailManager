@@ -43,4 +43,6 @@ public interface IStorageService {
     int deleteItemNumber(int itemId, int storageId, int number);
 
     List<ItemAndInventoryVO> itemListAndinventory(int pageRequest);
+
+    Integer getStorageItemNumbers();
 }

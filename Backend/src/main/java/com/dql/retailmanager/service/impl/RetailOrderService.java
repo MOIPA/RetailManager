@@ -15,6 +15,9 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author dql
+ */
 @Service
 public class RetailOrderService implements IRetailOrderService {
     @Resource
@@ -55,6 +58,31 @@ public class RetailOrderService implements IRetailOrderService {
     @Override
     public Object listRetailOrderByPage(SearchForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
+    }
+
+    @Override
+    public Integer getTotalOrderNumbers() {
+        return dao.getTotalOrderNumbers();
+    }
+
+    @Override
+    public Integer getTotalTurnOver() {
+        return dao.getTotalTurnOver();
+    }
+
+    @Override
+    public Integer getHeighestTurnOver() {
+        return dao.getHeighestTurnOver();
+    }
+
+    @Override
+    public Integer getTotalMemberNumbers() {
+        return dao.getTotalMemberNumbers();
+    }
+
+    @Override
+    public Integer getMoneyToday() {
+        return dao.getMoneyToday();
     }
 
     public PageInfo<RetailOrderVO> getPageInfo(SearchForm pageRequest) {
