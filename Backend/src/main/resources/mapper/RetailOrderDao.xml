@@ -64,7 +64,7 @@
         <if test="username != null">
             and usr.name like concat('%',#{username},'%')
         </if>
-        <if test="memberId != null">
+        <if test="memberId != null and memberId != -1">
             and member.id = #{memberId}
         </if>
     </select>
