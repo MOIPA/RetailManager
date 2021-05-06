@@ -1,6 +1,7 @@
 package com.dql.retailmanager.dao.mapper;
 
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.entity.form.SearchForm;
 import org.apache.ibatis.annotations.Select;
 
@@ -50,4 +51,7 @@ public interface MemberDao {
 
     @Select("select * from member where name = #{name} and pwd = #{pass}")
     Member selectByName(String name, String pass);
+
+    @Select("select * from member where name = #{name}")
+    Member findMemberByName(String name);
 }

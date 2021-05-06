@@ -2,6 +2,7 @@ package com.dql.retailmanager.controller;
 
 import com.dql.retailmanager.dao.mapper.SessionDao;
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.service.IMemberService;
@@ -17,6 +18,20 @@ public class MemberController {
     IMemberService memberService;
     @Resource
     SessionDao sessionDao;
+
+
+    @GetMapping("/memberLogin")
+    public Member getUserById(@RequestParam String name, @RequestParam String pwd, @RequestParam String sessionToken) {
+        Member member = memberService.findMemberByName(name);
+        if (member != null && member.getPwd().equals(pwd.trim())) {
+            // 存储用户session
+//            sessionDao.deleteSessionByUserId(member.getId());
+//            sessionDao.insertSession(member.getId(), sessionToken);
+            return member;
+        }
+        return null;
+    }
+
 
     @GetMapping("/getMemberById")
     public Member getMemberById(@RequestParam int id) {

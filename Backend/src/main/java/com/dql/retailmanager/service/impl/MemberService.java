@@ -3,6 +3,7 @@ package com.dql.retailmanager.service.impl;
 import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.dao.mapper.MemberDao;
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.dql.retailmanager.service.IMemberService;
@@ -83,5 +84,10 @@ public class MemberService implements IMemberService {
         if (m == null) return -2;
         m.setPwd(memberForm.getNewpass());
         return memberDao.updateByPrimaryKey(m);
+    }
+
+    @Override
+    public Member findMemberByName(String name) {
+        return memberDao.findMemberByName(name);
     }
 }

@@ -1,6 +1,7 @@
 package com.dql.retailmanager.service;
 
 import com.dql.retailmanager.entity.Member;
+import com.dql.retailmanager.entity.User;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
 import com.github.pagehelper.PageInfo;
@@ -40,4 +41,6 @@ public interface IMemberService {
  PageInfo<Member> getPageInfo(SearchForm pageRequest);
 
  int updateMemberPass(UpdateMemberForm memberForm);
+
+ Member findMemberByName(String name);
 }
