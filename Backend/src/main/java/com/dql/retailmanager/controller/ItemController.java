@@ -1,12 +1,20 @@
 package com.dql.retailmanager.controller;
 
+import com.dql.retailmanager.dao.mapper.ItemPicDao;
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.ItemPic;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IItemService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 
 @RestController
 @RequestMapping("/api/item")
@@ -14,6 +22,19 @@ import javax.annotation.Resource;
 public class ItemController {
     @Resource
     IItemService itemService;
+
+    @PostMapping("/itemImgUpload")
+    public int itemImgUpload(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        return itemService.itemImgUpload(file);
+    }
+
+    @GetMapping("/itemShow")
+    public void itemShow(HttpServletRequest req, HttpServletResponse resp, @RequestParam String picId) throws ServletException, IOException {
+        ItemPic res = itemService.getItemPicById(picId);
+        OutputStream outputStream = resp.getOutputStream();
+        outputStream.write(res.getContent());
+        outputStream.flush();
+    }
 
     @GetMapping("/getItemById")
     public Item getItemById(@RequestParam int id) {

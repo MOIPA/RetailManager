@@ -28,12 +28,13 @@
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Item"
             useGeneratedKeys="true">
         <!--@mbg.generated-->
-        insert into item (`name`, `desc`, item_code, price
+        insert into item (`name`, `desc`, item_code, price,pic_id
         )
         values (#{name,jdbcType=VARCHAR},
         #{desc,jdbcType=VARCHAR},
         #{itemCode,jdbcType=VARCHAR},
-        #{price,jdbcType=FLOAT}
+        #{price,jdbcType=FLOAT},
+        #{picId,jdbcType=INTEGER}
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.dql.retailmanager.entity.Item"

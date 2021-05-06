@@ -23,7 +23,7 @@
 <body class="login-bg">
 
   <div class="login layui-anim layui-anim-up">
-    <div class="message">retail management login system</div>
+    <div class="message">member login</div>
     <div id="darkbannerwrap"></div>
 
     <form method="post" class="layui-form">
@@ -48,19 +48,19 @@
           var rod = Math.round(1, 100);
           var md5rod = $.md5(rod + 'author');
           console.log(md5rod);
-          $.get(urlInfo.login, {
+          $.get(urlInfo.memberLogin, {
             name: data.field.username,
             pwd: data.field.password,
             sessionToken: md5rod
           }, function (data, status) {
             if (data != null && data != "") {
-              localStorage.setItem("token", md5rod);
-              localStorage.setItem("userId", data.id)
-              localStorage.setItem("userName", data.name)
+              // localStorage.setItem("token", md5rod);
+              localStorage.setItem("memberId", data.id)
+              localStorage.setItem("memberName", data.name)
               // localStorage.setItem("user", data);
-              location.href = 'index.html';
+              location.href = 'member-info.html';
             } else {
-              alert("error user or password");
+              alert("error member name or password");
               $("#login-name").val("");
               $("#login-password").val("");
             }

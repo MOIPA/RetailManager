@@ -41,7 +41,7 @@ public interface ItemDao {
      */
     int updateByPrimaryKey(Item record);
 
-    @Select("select id,name,price,`desc`,item_code as itemCode from item where name like concat('%',#{itemname},'%')")
+    @Select("select id,name,price,`desc`,item_code as itemCode,pic_id picId from item where name like concat('%',#{itemname},'%')")
     List<Item> selectPage(SearchForm pageRequest);
 
     @Select("select * from item where name = #{name}")

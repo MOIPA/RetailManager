@@ -50,6 +50,21 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">item pic</label>
+                            <div class="layui-input-inline uploadHeadImage">
+                                <div class="layui-upload-drag" id="headImg">
+                                    <i class="layui-icon"></i>
+                                    <p>click here to upload picture or drag picture to here</p>
+                                </div>
+                            </div>
+                            <div class="layui-input-inline">
+                                <div class="layui-upload-list">
+                                    <img class="layui-upload-img headImage"  id="pic_upload">
+                                    <p id="demoText"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label for="L_repass" class="layui-form-label"></label>
                             <button class="layui-btn" lay-filter="add" lay-submit="">add</button>
                         </div>
@@ -63,11 +78,49 @@
 <script type="module">
     import urlInfo from '../baseURL.js'
     import { checkAuth } from '../js/checkAuthority.js'
-    layui.use(['form', 'layer', 'jquery'],
+    layui.use(['form', 'layer', 'jquery', 'upload', 'element'],
         function () {
             $ = layui.jquery;
             var form = layui.form,
+                element = layui.element,
+                upload = layui.upload,
                 layer = layui.layer;
+
+            //拖拽上传
+            var uploadInst = upload.render({
+                elem: '#headImg'
+                , url: urlInfo.itemImgUpload
+                , size: 500
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#pic_upload').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    if (res < 0) {
+                        return layer.msg('upload failed');
+                    }
+                    //上传成功
+                    //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+                    /*   console.log(res.data.src);*/
+                    // window.parent.uploadHeadImage(res.data.src);
+                    localStorage.setItem("picId", res);
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #8f8f8f;">upload succeed!!!</span>');
+                }
+                , error: function () {
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">upload failed</span> <a class="layui-btn layui-btn-mini demo-reload">retry</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+            element.init();
+
 
             //自定义验证规则
             form.verify({
@@ -103,6 +156,7 @@
                                 "name": data.field.name,
                                 "desc": data.field.desc,
                                 "price": data.field.price,
+                                "picId": localStorage.getItem("picId"),
                             }),
                             dataType: "json",
                             success: function (message) {

@@ -3,7 +3,9 @@ package com.dql.retailmanager.service.impl;
 import com.dql.retailmanager.Utils.PageUtils;
 import com.dql.retailmanager.Utils.Uuid;
 import com.dql.retailmanager.dao.mapper.ItemDao;
+import com.dql.retailmanager.dao.mapper.ItemPicDao;
 import com.dql.retailmanager.entity.Item;
+import com.dql.retailmanager.entity.ItemPic;
 import com.dql.retailmanager.entity.Member;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.UpdateMemberForm;
@@ -12,14 +14,19 @@ import com.dql.retailmanager.service.IItemService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ItemService implements IItemService {
     @Resource
     ItemDao dao;
+
+    @Resource
+    ItemPicDao itemPicDao;
 
     @Override
     public int deleteById(Integer id) {
@@ -57,6 +64,22 @@ public class ItemService implements IItemService {
     @Override
     public Object listItemByPage(SearchForm pageRequest) {
         return PageUtils.getPageResult(pageRequest, getPageInfo(pageRequest));
+    }
+
+    @Override
+    public int itemImgUpload(MultipartFile file) throws IOException {
+        ItemPic itemPic = new ItemPic(file.getBytes());
+        if (file != null) {
+            itemPicDao.insert(itemPic);
+            return itemPic.getId();
+        }
+        return -1;
+    }
+
+    @Override
+    public ItemPic getItemPicById(String picId) {
+        ItemPic itemPic = itemPicDao.selectByPrimaryKey(Integer.parseInt(picId));
+        return itemPic;
     }
 
     public PageInfo<Item> getPageInfo(SearchForm pageRequest) {

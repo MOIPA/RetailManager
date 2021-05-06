@@ -31,6 +31,8 @@ public class Item implements Serializable {
      */
     private String itemCode;
 
+    private int picId;
+
     /**
      * price
      */
