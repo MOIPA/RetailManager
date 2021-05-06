@@ -36,6 +36,11 @@ public class ItemController {
         outputStream.flush();
     }
 
+    @GetMapping("/getItemPics")
+    public int[] getItemPics(@RequestParam String ids) {
+        return itemService.getItemPics(ids.split(","));
+    }
+
     @GetMapping("/getItemById")
     public Item getItemById(@RequestParam int id) {
         return itemService.getItemById(id);

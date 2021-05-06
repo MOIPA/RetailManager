@@ -32,17 +32,22 @@
 
                 </div> -->
           <blockquote class="layui-elem-quote layui-text">
-            items detail info
+            order info
           </blockquote>
           <table class="layui-hide" id="itemDetailList" lay-filter="itemDetailList"></table>
-          <blockquote id="total-cost" id="costs" style="color:red;" class="layui-elem-quote layui-text">
-            cost
+          <blockquote class="layui-elem-quote layui-text">
+            item list info
           </blockquote>
+          <table class="layui-hide" id="itemInfo" lay-filter="itemInfo"></table>
+
         </div>
       </div>
     </div>
   </div>
 </body>
+<script type="text/html" id="bar">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">detail</a>
+</script>
 
 <script src="./lib/jquery-3.5.1.js"></script>
 <script type="module">
@@ -56,37 +61,110 @@
         layer = layui.layer;
       var itemDetailListData = [];
 
-      // 组装数据
-      var rawData = JSON.parse(localStorage.getItem("itemDetail"));
-      var allNames = rawData.itemNames.split(",");
-      var allNumbers = rawData.itemNumber.split(",");
-      var allTotalMoney = rawData.itemMoney.split(",");
-
-      var costs = 0;
-      for (let i = 0; i < allNames.length; i++) {
-        itemDetailListData.push({
-          itemName: allNames[i],
-          numbers: allNumbers[i],
-          price: allTotalMoney[i],
-          totalPrice: parseFloat(allNumbers[i]) * parseFloat(allTotalMoney[i])
-        });
-        costs += parseFloat(allNumbers[i]) * parseFloat(allTotalMoney[i]);
-      }
-
-      $("#total-cost").text("total costs is : " + costs);
-
-      var itemDetailList = table.render({
+      var retailTable = table.render({
         elem: '#itemDetailList'
-        , height: '340px'
-        , skin: 'nob'
+        , height: '350px'
+        , defaultToolbar: ['filter', 'exports', 'print', {
+          title: 'tips'
+          , layEvent: 'LAYTABLE_TIPS'
+          , icon: 'layui-icon-tips'
+        }]
+        , where: {
+          memberId: localStorage.getItem("memberId")
+        }
+        , method: 'post'
+        , contentType: 'application/json'
+        , url: urlInfo.listRetailOrderByPage
         , cols: [[
-          , { field: 'itemName', title: 'item name' }
-          , { field: 'price', title: 'price', style: ' color: #009688;' }
-          , { field: 'numbers', title: 'numbers', }
-          , { field: 'totalPrice', title: 'total price', style: ' color: #009688;' }
-        ]],
-        data: itemDetailListData
+          , { field: 'retailCode', title: 'retail code', sort: true }
+          , { field: 'tradeTime', title: 'tradeTime' }
+          , { field: 'storageName', title: 'storageName', sort: true }
+          , { field: 'accountCode', title: 'revice account code', sort: true }
+          , { field: 'bankName', title: 'revice account bank' }
+          , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 250 }
+        ]]
         , page: true
+      });
+
+
+      window.show_img = function (t) {
+        var t = $(t).find("img");
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['80%', '80%'], //宽高
+          shadeClose: true, //开启遮罩关闭
+          end: function (index, layero) {
+            return false;
+          },
+          content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" /></div>'
+        });
+      }
+      //监听行工具事件
+      table.on('tool(itemDetailList)', function (obj) {
+        var data = obj.data;
+        var picIds = null;
+        var names = obj.data.itemNames.split(",");
+        var moneys = obj.data.itemMoney.split(",");
+        var numbers = obj.data.itemNumber.split(",");
+        //console.log(obj)
+        if (obj.event === 'detail') {
+          debugger;
+          var ids = obj.data.itemId;
+          // 获得item的所有图片id
+          $.ajax({
+            type: "GET",
+            url: urlInfo.getItemPics,
+            data: {
+              ids: ids
+            },
+            success: function (message) {
+              picIds = message;
+            },
+            error: function (message) {
+              layer.msg("sorry no pic detected");
+            },
+            async: false
+          });
+          var myData = [];
+          if (picIds != null) {
+            // 拼装数据
+            for (let i = 0; i < names.length; i++) {
+              myData.push({
+                name: names[i],
+                number: numbers[i],
+                money: moneys[i],
+                picId: picIds[i]
+              });
+            }
+          }
+          table.render({
+            elem: '#itemInfo'
+            , height: '350px'
+            , defaultToolbar: ['filter', 'exports', 'print', {
+              title: 'tips'
+              , layEvent: 'LAYTABLE_TIPS'
+              , icon: 'layui-icon-tips'
+            }]
+            , cols: [[
+              { field: 'name', title: 'item name', sort: true }
+              , { field: 'number', title: 'number' }
+              , { field: 'money', title: 'costs', sort: true }
+              , {
+                field: 'item_img_url',
+                title: 'item Pic',
+                sort: true,
+                templet: function (d) {
+                  return '<div onclick="show_img(this)" ><img src="' + urlInfo.itemShow + '?picId=' + d.picId + '" alt="" width="50px" height="50px"></a></div>';
+                }
+              }
+            ]]
+            , data: myData
+            , page: true
+          });
+
+        }
       });
 
 

@@ -48,7 +48,7 @@
           <div class="layui-card-header">
             <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>batch
               delete</button>
-            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,400)"><i
+            <button class="layui-btn" onclick="xadmin.open('add item','./item-add.html',600,500)"><i
                 class="layui-icon"></i>add</button>
           </div>
           <div class="layui-card-body layui-table-body layui-table-main">
@@ -90,10 +90,34 @@
           , { field: 'desc', title: 'desc' }
           , { field: 'price', title: 'price', sort: true }
           , { field: 'itemCode', title: 'itemCode' }
+          , {
+            field: 'item_img_url',
+            title: 'item Pic',
+            sort: true,
+            templet: function (d) {
+              return '<div onclick="show_img(this)" ><img src="' + urlInfo.itemShow + '?picId=' + d.picId + '" alt="" width="50px" height="50px"></a></div>';
+            }
+          }
           , { fixed: 'right', title: 'operation', toolbar: '#bar', width: 150 }
         ]]
         , page: true
       });
+
+
+      window.show_img = function (t) {
+        var t = $(t).find("img");
+        //页面层
+        layer.open({
+          type: 1,
+          skin: 'layui-layer-rim', //加上边框
+          area: ['80%', '80%'], //宽高
+          shadeClose: true, //开启遮罩关闭
+          end: function (index, layero) {
+            return false;
+          },
+          content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" /></div>'
+        });
+      }
 
       // 监听search
       form.on('submit(search)', function (data) {
@@ -133,7 +157,6 @@
             layer.close(index);
           });
         } else if (obj.event === 'edit') {
-          debugger;
           localStorage.setItem("itemId", obj.data.id);
           localStorage.setItem("itemCode", obj.data.itemCode);
           localStorage.setItem("itemName", obj.data.name);

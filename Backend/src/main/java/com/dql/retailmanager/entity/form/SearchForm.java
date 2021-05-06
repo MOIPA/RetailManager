@@ -27,6 +27,8 @@ public class SearchForm extends PageRequest {
 
     private int itemId;
 
+    private int memberId;
+
     /**
      * date search
      */

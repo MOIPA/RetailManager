@@ -27,6 +27,7 @@ export default {
     updateItemById: baseUrl + "/item/updateItemById",
     itemImgUpload: baseUrl + "/item/itemImgUpload",
     itemShow: baseUrl + "/item/itemShow",
+    getItemPics: baseUrl + "/item/getItemPics",
     // storage
     storageList: baseUrl + "/storage/listStorageByPage",
     addStorage: baseUrl + "/storage/addStorage",

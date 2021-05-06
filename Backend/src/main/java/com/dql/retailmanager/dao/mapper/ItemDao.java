@@ -46,4 +46,7 @@ public interface ItemDao {
 
     @Select("select * from item where name = #{name}")
     List<Item> getItemByName(String name);
+
+    @Select("select pic_id from item where id = #{id}")
+    int getItemPicById(int id);
 }

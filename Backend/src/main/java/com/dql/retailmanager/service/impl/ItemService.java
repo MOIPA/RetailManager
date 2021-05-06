@@ -6,10 +6,7 @@ import com.dql.retailmanager.dao.mapper.ItemDao;
 import com.dql.retailmanager.dao.mapper.ItemPicDao;
 import com.dql.retailmanager.entity.Item;
 import com.dql.retailmanager.entity.ItemPic;
-import com.dql.retailmanager.entity.Member;
 import com.dql.retailmanager.entity.form.SearchForm;
-import com.dql.retailmanager.entity.form.UpdateMemberForm;
-import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IItemService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -80,6 +77,15 @@ public class ItemService implements IItemService {
     public ItemPic getItemPicById(String picId) {
         ItemPic itemPic = itemPicDao.selectByPrimaryKey(Integer.parseInt(picId));
         return itemPic;
+    }
+
+    @Override
+    public int[] getItemPics(String[] ids) {
+        int[] res = new int[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+            res[i] = this.dao.getItemPicById(Integer.parseInt(ids[i]));
+        }
+        return res;
     }
 
     public PageInfo<Item> getPageInfo(SearchForm pageRequest) {

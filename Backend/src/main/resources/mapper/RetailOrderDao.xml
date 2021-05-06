@@ -64,6 +64,9 @@
         <if test="username != null">
             and usr.name like concat('%',#{username},'%')
         </if>
+        <if test="memberId != null">
+            and member.id = #{memberId}
+        </if>
     </select>
     <select id="getMemberStatus" resultType="java.util.Map">
         SELECT t1.timeDay as 'day',t2.`addNumbers`
