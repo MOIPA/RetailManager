@@ -16,4 +16,5 @@ public class ItemAndStorageInfo {
     private int safeNumber;
     private int itemId;
     private Date updateTime;
+    private int storageId;
 }

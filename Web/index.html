@@ -14,11 +14,6 @@
     <!-- <link rel="stylesheet" href="./css/theme5.css"> -->
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
-    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
-          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
-          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
     <script>
             // 是否开启刷新记忆tab功能
             // var is_remember = false;
@@ -34,34 +29,6 @@
         <div class="left_open">
             <a><i title="open right" class="iconfont">&#xe699;</i></a>
         </div>
-        <!-- <ul class="layui-nav left fast-add" lay-filter="">
-            <li class="layui-nav-item">
-                <a href="javascript:;">+新增</a>
-                <dl class="layui-nav-child">
-                    
-                    <dd>
-                        <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
-                            <i class="iconfont">&#xe6a2;</i>弹出最大化</a>
-                    </dd>
-                    <dd>
-                        <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
-                            <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a>
-                    </dd>
-                    <dd>
-                        <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
-                            <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a>
-                    </dd>
-                    <dd>
-                        <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
-                            <i class="iconfont">&#xe6b8;</i>在tab打开</a>
-                    </dd>
-                    <dd>
-                        <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
-                            <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a>
-                    </dd>
-                </dl>
-            </li>
-        </ul> -->
         <ul class="layui-nav right" lay-filter="">
             <li class="layui-nav-item">
                 <a href="javascript:;" id="user"></a>
@@ -206,34 +173,106 @@
     </div>
     <div class="page-content-bg"></div>
     <style id="theme_style"></style>
-    <!-- 右侧主体结束 -->
-    <!-- 中部结束 -->
-    <script src="./lib/jquery-3.5.1.js"></script>
-    <script type="module">
-        //JavaScript代码区域
-        // 判断是否登陆
-        import urlInfo from './baseURL.js'
-        layui.use(['element', 'layer'], function () {
-            var element = layui.element;
-            $.get(urlInfo.sessionCheck, {
-                userId: localStorage.getItem("userId"),
-                token: localStorage.getItem("token")
-            }, function (data, status) {
-                if (data == -1) {
-                    // 用户未登录过 跳转到登陆页面
-                    layer.msg('please login');
-                    setTimeout(() => {
-                        window.location.href = "./login.html";
-                        window.event.returnValue = false;
-                    }, 1500);
-                } else {
-                    $('#user').text(localStorage.getItem("userName"));
-                    console.log("logined user" + localStorage.getItem("userName"));
-                }
-            });
+</body>
+<div id="shortageItem">
+    <blockquote class="layui-elem-quote layui-text">
+        shortage detail
+    </blockquote>
+    <table class="layui-hide" id="shortage" lay-filter="shortage"></table>
+</div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<script src="./lib/jquery-3.5.1.js"></script>
+<script src="./lib/socket.io.js"></script>
+
+<script type="module">
+    //JavaScript代码区域
+    // 判断是否登陆
+    import urlInfo from './baseURL.js'
+    layui.use(['element', 'layer', 'table'], function () {
+        var element = layui.element;
+        var table = layui.table;
+
+        $.get(urlInfo.sessionCheck, {
+            userId: localStorage.getItem("userId"),
+            token: localStorage.getItem("token")
+        }, function (data, status) {
+            if (data == -1) {
+                // 用户未登录过 跳转到登陆页面
+                layer.msg('please login');
+                setTimeout(() => {
+                    window.location.href = "./login.html";
+                    window.event.returnValue = false;
+                }, 1500);
+            } else {
+                $('#user').text(localStorage.getItem("userName"));
+                console.log("logined user" + localStorage.getItem("userName"));
+            }
+        });
+        layer.open({
+            type: 1
+            , content: $('#shortageItem') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            , offset: 'rb'
+            , area: ['400px', '300px']
+            , shade: 0
+            , title: false
+            , closeBtn: 0
         });
 
-    </script>
-</body>
+        var socket;
+        connect();
+        socket.emit('detectStorage', localStorage.getItem("userId"));
+
+        var shortageT = table.render({
+            elem: '#shortage'
+            , height: '270px'
+            , defaultToolbar: ['filter', 'exports', 'print', {
+                title: 'tips'
+                , layEvent: 'LAYTABLE_TIPS'
+                , icon: 'layui-icon-tips'
+            }]
+            , cols: [[
+                // , { field: 'itemId', title: 'itemId', sort: true }
+                , { field: 'name', title: 'name' }
+                // , { field: 'storageId', title: 'storageId', sort: true }
+                , { field: 'safeNumber', title: 'safeNumber', sort: true }
+                , { field: 'number', title: 'number' }
+            ]]
+            , page: false
+            , data: []
+        });
+
+        function connect() {
+            var opts = {
+                query: 'loginUserNum=' + localStorage.getItem("userId")
+            };
+            socket = io.connect('http://localhost:9090', opts);
+            socket.on('connect', function () {
+                console.log("socket connected");
+            });
+            socket.on('storageStatus', function (data) {
+                data = data.itemLists;
+                var myData = [];
+                for (let i = 0; i < data.length; i++) {
+                    const d = data[i];
+                    myData.push({
+                        "itemId": d.itemId,
+                        "name": d.name,
+                        "storageId": d.storageId,
+                        "safeNumber": d.safeNumber,
+                        "number": d.number,
+                    });
+                }
+                shortageT.reload({ data: myData });
+            });
+
+            socket.on('disconnect', function () {
+                console.log("socket disconnect");
+            });
+        }
+
+    });
+
+</script>
 
 </html>

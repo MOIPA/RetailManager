@@ -1,5 +1,6 @@
 package com.dql.retailmanager.dao.mapper;
 
+import com.dql.retailmanager.entity.ItemAndInventoryVO;
 import com.dql.retailmanager.entity.ItemAndStorageInfo;
 import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
@@ -60,4 +61,5 @@ public interface StorageDao {
 
     @Select("select id,name from storage")
     List<Map> getAllStorage();
+
 }

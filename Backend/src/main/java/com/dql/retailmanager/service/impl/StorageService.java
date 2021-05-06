@@ -10,7 +10,6 @@ import com.dql.retailmanager.entity.Storage;
 import com.dql.retailmanager.entity.form.SearchForm;
 import com.dql.retailmanager.entity.form.StorageItemForm;
 import com.dql.retailmanager.entity.ItemAndInventoryVO;
-import com.dql.retailmanager.entity.page.PageRequest;
 import com.dql.retailmanager.service.IStorageService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StorageService implements IStorageService {
@@ -160,4 +161,21 @@ public class StorageService implements IStorageService {
         return new PageInfo<ItemAndStorageInfo>(itemList);
     }
 
+    public List<ItemAndStorageInfo> detectUnSafeItem() {
+        List<ItemAndStorageInfo> resList = new LinkedList<>();
+        SearchForm pageRequest = new SearchForm();
+        pageRequest.setLimit(1000);
+        pageRequest.setPage(1);
+        List<Map> storageIds = storageDao.getAllStorage();
+        for (int i = 0; i < storageIds.size(); i++) {
+            Map x = storageIds.get(i);
+            int id = (Integer) x.get("id");
+            pageRequest.setStorageId(id);
+            List<ItemAndStorageInfo> itemList = storageDao.selectItemByPage(pageRequest);
+            itemList = itemList.stream().filter(z -> z.getNumber() < z.getSafeNumber()).collect(Collectors.toList());
+            itemList.forEach(y -> y.setStorageId(id));
+            resList.addAll(itemList);
+        }
+        return resList;
+    }
 }
