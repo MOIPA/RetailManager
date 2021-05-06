@@ -57,6 +57,19 @@ public class StatisticsController {
         return numbers;
     }
 
+
+    @GetMapping("/accountStatus")
+    public double[] accountStatus() {
+        List<Map> accountStatus = retailOrderService.getAccountStatus();
+        double[] numbers = accountStatus.stream().mapToDouble(x -> {
+            Object addNumbers = x.get("addNumbers");
+            if (addNumbers == null) return 0;
+            else return (Double) addNumbers;
+        }).toArray();
+        return numbers;
+    }
+
+
     @GetMapping("/retailStatus")
     public List<Map> retailStatus() {
         List<Map> result = new LinkedList<>();
@@ -65,6 +78,28 @@ public class StatisticsController {
         for (int i = 0; i < storageIds.size(); i++) {
             Map x = storageIds.get(i);
             List<Integer> membserStatus = retailOrderService.retailStatus((Integer) x.get("id"));
+            res.put("name", x.get("name"));
+            res.put("data", membserStatus.stream().map(y -> y == null ? 0 : y).collect(Collectors.toList()));
+            res.put("type", "line");
+            res.put("smooth", true);
+            Map tmp = new HashMap();
+            Map tmpx = new HashMap();
+            tmp.put("normal", tmpx);
+            res.put("areaStyle", tmp);
+            result.add(res);
+            res = new HashMap();
+        }
+        return result;
+    }
+
+    @GetMapping("/purchaseStatus")
+    public List<Map> purchaseStatus() {
+        List<Map> result = new LinkedList<>();
+        Map res = new HashMap();
+        List<Map> storageIds = storageService.getAllStorage();
+        for (int i = 0; i < storageIds.size(); i++) {
+            Map x = storageIds.get(i);
+            List<Integer> membserStatus = retailOrderService.purchaseStatus((Integer) x.get("id"));
             res.put("name", x.get("name"));
             res.put("data", membserStatus.stream().map(y -> y == null ? 0 : y).collect(Collectors.toList()));
             res.put("type", "line");

@@ -37,4 +37,8 @@ public interface IRetailOrderService {
     List<Map> getMembserStatus();
 
     List<Integer> retailStatus(Integer x);
+
+    List<Map> getAccountStatus();
+
+    List<Integer> purchaseStatus(Integer x);
 }

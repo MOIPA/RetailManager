@@ -148,6 +148,89 @@
         ) as t2 ON t1.timeDay = t2.`addTime`
         ORDER BY t1.timeDay
     </select>
+    <select id="getAccountStatus" resultType="java.util.Map">
+        SELECT t1.timeDay as 'day',t2.`addNumbers`
+        FROM (
+                 SELECT date_format(lastWeek.`timeDay`, '%Y-%m-%d') as 'timeDay'
+                 FROM (
+                          select DATE_SUB(NOW(), interval 13 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 12 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 11 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 10 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 9 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 8 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 7 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 6 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 5 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 4 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 3 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 2 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 1 day) as 'timeDay'
+                      ) as lastWeek
+                 WHERE YEARWEEK(lastWeek.`timeDay`, 1) = YEARWEEK(NOW(), 1) - 1
+             ) as t1
+                 LEFT JOIN (
+            SELECT DATE_FORMAT(trade_time, '%Y-%m-%d') 'addTime',sum(money) as 'addNumbers'
+            FROM retail_order
+            WHERE YEARWEEK(trade_time, 1) = YEARWEEK(NOW(), 1) - 1
+            GROUP BY DATE_FORMAT(trade_time, '%Y-%m-%d')
+        ) as t2 ON t1.timeDay = t2.`addTime`
+        ORDER BY t1.timeDay
+    </select>
+    <select id="getPurchaseStatus" resultType="java.lang.Integer">
+        SELECT t2.`addNumbers`
+        FROM (
+                 SELECT date_format(lastWeek.`timeDay`, '%Y-%m-%d') as 'timeDay'
+                 FROM (
+                          select DATE_SUB(NOW(), interval 13 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 12 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 11 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 10 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 9 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 8 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 7 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 6 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 5 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 4 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 3 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 2 day) as 'timeDay'
+                          UNION ALL
+                          select DATE_SUB(NOW(), interval 1 day) as 'timeDay'
+                      ) as lastWeek
+                 WHERE YEARWEEK(lastWeek.`timeDay`, 1) = YEARWEEK(NOW(), 1) - 1
+             ) as t1
+                 LEFT JOIN (
+            SELECT DATE_FORMAT(ticket_date, '%Y-%m-%d') 'addTime',COUNT(*) as 'addNumbers'
+            FROM purchase
+            WHERE YEARWEEK(ticket_date, 1) = YEARWEEK(NOW(), 1) - 1
+              and storage_id = #{x}
+            GROUP BY DATE_FORMAT(ticket_date, '%Y-%m-%d')
+        ) as t2 ON t1.timeDay = t2.`addTime`
+        ORDER BY t1.timeDay
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         <!--@mbg.generated-->
         delete from retail_order

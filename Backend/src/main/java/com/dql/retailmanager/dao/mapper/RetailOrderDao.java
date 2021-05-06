@@ -62,4 +62,8 @@ public interface RetailOrderDao {
     List<Map> getMemberStatus();
 
     List<Integer> getRetailStatus(Integer x);
+
+    List<Map> getAccountStatus();
+
+    List<Integer> getPurchaseStatus(Integer x);
 }
